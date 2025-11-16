@@ -81,8 +81,6 @@ export const actions = {
 			return parseInt(userId.toString());
 		});
 
-		console.log(statusFilter, projectFilter, userFilter);
-
 		const projects = await db
 			.select(PROJECT_FORMAT)
 			.from(project)
@@ -90,9 +88,9 @@ export const actions = {
 			.where(
 				and(
 					eq(project.deleted, false),
-					inArray(project.status, statusFilter),
+					statusFilter.length > 0 ? inArray(project.status, statusFilter) : undefined,
 					projectFilter.length > 0 ? inArray(project.id, projectFilter) : undefined,
-					userFilter.length > 0 ? inArray(project.userId, userFilter) : undefined,
+					userFilter.length > 0 ? inArray(project.userId, userFilter) : undefined
 				)
 			)
 			.groupBy(project.id);
