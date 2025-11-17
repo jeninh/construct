@@ -33,7 +33,7 @@
 					<label class="flex flex-col gap-1">
 						<span class="font-medium">Status</span>
 						<select
-							class="grow border-3 border-amber-700 bg-amber-900 fill-amber-50 p-2 text-sm ring-amber-900 placeholder:text-amber-900 active:ring-3"
+							class="h-40 grow border-3 border-amber-700 bg-amber-900 fill-amber-50 p-2 text-sm ring-amber-900 placeholder:text-amber-900 active:ring-3"
 							name="status"
 							value={form?.fields.status ?? ['submitted']}
 							multiple
@@ -51,43 +51,47 @@
 					<!-- Project -->
 					<label class="flex flex-col">
 						<span class="mb-1 font-medium">Project</span>
-						<input
-							type="text"
-							placeholder="search"
-							bind:value={projectSearch}
-							class="themed-input-light border-b-0 py-1.5"
-						/>
-						<select
-							class="themed-input-light grow"
-							name="project"
-							value={form?.fields.project ?? []}
-							multiple
-						>
-							{#each filteredProjects as project}
-								<option value={project.id} class="truncate">{project.name}</option>
-							{/each}
-						</select>
+						<div class="flex h-40 flex-col">
+							<input
+								type="text"
+								placeholder="search"
+								bind:value={projectSearch}
+								class="themed-input-light border-b-0 py-1.5"
+							/>
+							<select
+								class="themed-input-light grow"
+								name="project"
+								value={form?.fields.project ?? []}
+								multiple
+							>
+								{#each filteredProjects as project}
+									<option value={project.id} class="truncate">{project.name}</option>
+								{/each}
+							</select>
+						</div>
 					</label>
 
 					<!-- User -->
 					<label class="flex flex-col">
 						<span class="mb-1 font-medium">User</span>
-						<input
-							type="text"
-							placeholder="search"
-							bind:value={userSearch}
-							class="themed-input-light border-b-0 py-1.5"
-						/>
-						<select
-							class="themed-input-light grow"
-							name="user"
-							value={form?.fields.user ?? []}
-							multiple
-						>
-							{#each filteredUsers as user}
-								<option value={user?.id} class="truncate">{user?.name}</option>
-							{/each}
-						</select>
+						<div class="flex h-40 flex-col">
+							<input
+								type="text"
+								placeholder="search"
+								bind:value={userSearch}
+								class="themed-input-light border-b-0 py-1.5"
+							/>
+							<select
+								class="themed-input-light grow"
+								name="user"
+								value={form?.fields.user ?? []}
+								multiple
+							>
+								{#each filteredUsers as user}
+									<option value={user?.id} class="truncate">{user?.name}</option>
+								{/each}
+							</select>
+						</div>
 					</label>
 				</div>
 				<button type="submit" class="button md amber mt-3 w-full">Apply!</button>
@@ -144,7 +148,11 @@
 					<h1 class="flex flex-row gap-1 text-xl font-semibold">
 						<span class="grow truncate">{project.project.name}</span>
 					</h1>
-					<p class="text-sm">by <a class="underline relative z-2" href={`/dashboard/users/${project.user?.id}`}>{project.user?.name}</a></p>
+					<p class="text-sm">
+						by <a class="relative z-2 underline" href={`/dashboard/users/${project.user?.id}`}
+							>{project.user?.name}</a
+						>
+					</p>
 					<p class="grow">{project.project.description}</p>
 					{#if project.project.url && project.project.url.length > 0}
 						<div class="my-2 flex">
