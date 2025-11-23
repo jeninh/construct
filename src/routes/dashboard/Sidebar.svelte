@@ -10,7 +10,7 @@
 		ClipboardPenLine
 	} from '@lucide/svelte';
 	import { page } from '$app/state';
-	import logo from '$lib/assets/logo.NOLEAKY.png';
+	import logo from '$lib/assets/logo.png';
 
 	let { user } = $props();
 

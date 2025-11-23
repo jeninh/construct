@@ -4,7 +4,6 @@ COPY package*.json ./
 ENV DATABASE_URL=file:local.db
 RUN npm ci
 COPY . .
-RUN cp src/lib/assets/logo.png src/lib/assets/logo.NOLEAKY.png
 RUN npm run build
 RUN npm prune --production
 
