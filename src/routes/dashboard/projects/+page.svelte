@@ -1,9 +1,12 @@
 <script lang="ts">
 	import Button from '$lib/components/Button.svelte';
+	import Head from '$lib/components/Head.svelte';
 	import Project from '$lib/components/Project.svelte';
 
 	let { data } = $props();
 </script>
+
+<Head title="Projects" />
 
 <div class="flex h-full flex-col">
 	<div class="flex">

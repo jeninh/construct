@@ -13,6 +13,7 @@
 	import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 	import { OrbitControls } from 'three/examples/jsm/Addons.js';
 	import { onMount } from 'svelte';
+	import Head from '$lib/components/Head.svelte';
 
 	// Necessary for camera/plane rotation
 	let degree = Math.PI / 180;
@@ -193,6 +194,8 @@
 	});
 </script>
 
+<Head title="" />
+
 <a href="https://hackclub.com/">
 	<img
 		class="transition-transform hover:rotate-6"
@@ -213,9 +216,7 @@
 <div class="flex w-full flex-col items-center justify-center px-10 lg:flex-row">
 	<div class="mt-40">
 		<h1 class="font-hero text-4xl sm:text-5xl md:text-6xl">Framework</h1>
-		<p class="my-3 text-xl font-medium">
-			Design a Framework expansion card, get it manufactured!
-		</p>
+		<p class="my-3 text-xl font-medium">Design a Framework expansion card, get it manufactured!</p>
 		{#if data.loggedIn}
 			<Button text="Go to dashboard" href="/dashboard" />
 		{:else}

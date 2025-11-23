@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Head from '$lib/components/Head.svelte';
 	import { projectStatuses } from '$lib/utils.js';
 	import { ExternalLink } from '@lucide/svelte';
 	import relativeDate from 'tiny-relative-date';
@@ -20,6 +21,8 @@
 		data.users.filter((user) => user.name.toLowerCase().includes(userSearch.toLowerCase()))
 	);
 </script>
+
+<Head title="Review" />
 
 <div class="flex h-full flex-col">
 	<h1 class="mt-5 mb-3 font-hero text-3xl font-medium">Review</h1>

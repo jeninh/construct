@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import CharCountedTextarea from '$lib/components/CharCountedTextarea.svelte';
 	import Devlog from '$lib/components/Devlog.svelte';
+	import Head from '$lib/components/Head.svelte';
 	import type { PageProps } from './$types';
 
 	let { data, form, params }: PageProps = $props();
@@ -9,7 +10,9 @@
 	let description = $state(form?.fields?.description ?? data.devlog.description);
 </script>
 
-<h1 class="mt-5 mb-3 font-hero text-2xl font-medium">Edit devlog</h1>
+<Head title="Edit journal log" />
+
+<h1 class="mt-5 mb-3 font-hero text-2xl font-medium">Edit journal log</h1>
 <Devlog
 	devlog={{ ...data.devlog, description: description }}
 	showModifyButtons={false}

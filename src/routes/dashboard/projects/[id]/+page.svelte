@@ -8,6 +8,7 @@
 	import { ALLOWED_IMAGE_TYPES, ALLOWED_MODEL_EXTS, MAX_UPLOAD_SIZE } from './config';
 	import { projectStatuses } from '$lib/utils';
 	import { enhance } from '$app/forms';
+	import Head from '$lib/components/Head.svelte';
 
 	const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
 
@@ -34,6 +35,8 @@
 		);
 	}
 </script>
+
+<Head title={data.project.name} />
 
 <h1 class="mt-5 mb-2 font-hero text-3xl font-medium">{data.project.name}</h1>
 <p class="text-sm">

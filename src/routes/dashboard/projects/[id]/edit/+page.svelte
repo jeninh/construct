@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Head from '$lib/components/Head.svelte';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
 </script>
+
+<Head title="Edit project" />
 
 <h1 class="mt-5 mb-3 font-hero text-2xl font-medium">Edit project</h1>
 <form method="POST" class="flex flex-col gap-3" use:enhance>

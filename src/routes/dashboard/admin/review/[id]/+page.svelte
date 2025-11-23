@@ -1,9 +1,12 @@
 <script lang="ts">
 	import relativeDate from 'tiny-relative-date';
 	import Devlog from '$lib/components/Devlog.svelte';
+	import Head from '$lib/components/Head.svelte';
 
 	let { data } = $props();
 </script>
+
+<Head title={'Review: ' + data.project.project.name} />
 
 <div class="flex h-full flex-row gap-10">
 	<div class="grow">

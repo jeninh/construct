@@ -1,8 +1,11 @@
 <script lang="ts">
+	import Head from '$lib/components/Head.svelte';
 	import ChecklistItem from './ChecklistItem.svelte';
 
 	let { data } = $props();
 </script>
+
+<Head title="Dashboard" />
 
 <h1 class="mt-5 mb-1 font-hero text-3xl font-medium">Dashboard</h1>
 <p class="mb-2">Welcome to Construct!</p>
