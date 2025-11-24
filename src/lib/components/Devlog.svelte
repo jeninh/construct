@@ -312,7 +312,7 @@
 	<div class="my-1 flex flex-col gap-3 lg:flex-row">
 		<!-- svelte-ignore a11y_img_redundant_alt -->
 		<div
-			class={`flex max-h-100 w-full grow flex-row justify-center border-3 border-amber-900 ${devlog.model ? 'lg:max-w-[55%]' : ''}`}
+			class={`flex max-h-100 w-full grow flex-row justify-center border-3 border-primary-900 ${devlog.model ? 'lg:max-w-[55%]' : ''}`}
 		>
 			<div class="flex justify-center">
 				<img
@@ -323,14 +323,14 @@
 			</div>
 		</div>
 		{#if devlog.model}
-			<div class="max-h-100 w-100 grow border-3 border-amber-900 lg:max-w-[60%]">
+			<div class="max-h-100 w-100 grow border-3 border-primary-900 lg:max-w-[60%]">
 				<canvas class="h-full w-full" id={`canvas-${devlog.id}`}></canvas>
 			</div>
 		{/if}
 	</div>
 	{#if showModifyButtons}
 		<div class="mt-1 flex flex-row gap-1">
-			<a href={`/dashboard/projects/${projectId}/devlog/${devlog.id}/edit`} class="button xs amber">
+			<a href={`/dashboard/projects/${projectId}/devlog/${devlog.id}/edit`} class="button xs primary">
 				<SquarePen />
 				Edit
 			</a>

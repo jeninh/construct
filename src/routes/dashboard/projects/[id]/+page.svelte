@@ -53,7 +53,7 @@
 <p class="mt-0.5">Status: {projectStatuses[data.project.status]}</p>
 {#if data.project.url && data.project.url.length > 0}
 	<div class="my-2 flex">
-		<a class="button sm amber" href={data.project.url} target="_blank">
+		<a class="button sm primary" href={data.project.url} target="_blank">
 			<ExternalLink />
 			Link to project
 		</a>
@@ -65,7 +65,7 @@
 	<div class="mt-3 flex gap-2">
 		<a
 			href={editable ? `/dashboard/projects/${data.project.id}/edit` : null}
-			class={`button sm amber ${editable ? '' : 'disabled'}`}
+			class={`button sm primary ${editable ? '' : 'disabled'}`}
 			title={editable ? null : 'Currently locked as the project has been shipped'}
 		>
 			<SquarePen />
@@ -114,13 +114,13 @@
 								min={data.validationConstraints.timeSpent.min}
 								max={data.validationConstraints.timeSpent.currentMax}
 								{onchange}
-								class="themed-box w-25 ring-amber-900 placeholder:text-amber-900 active:ring-3"
+								class="themed-box w-25 ring-primary-900 placeholder:text-primary-900 active:ring-3"
 							/>
 						</div>
 						<input
 							name="timeSpent"
 							type="range"
-							class="grow accent-amber-500"
+							class="grow accent-primary-500"
 							bind:value={timeSpent}
 							step="1"
 							min="0"
@@ -161,7 +161,7 @@
 							type="file"
 							name="image"
 							accept={ALLOWED_IMAGE_TYPES.join(', ')}
-							class="themed-box p-1 outline-amber-900 focus:outline-1"
+							class="themed-box p-1 outline-primary-900 focus:outline-1"
 						/>
 						{#if form?.invalid_image_file}
 							<p class="mt-1 text-sm">
@@ -179,7 +179,7 @@
 							type="file"
 							name="model"
 							accept={ALLOWED_MODEL_EXTS.join(', ')}
-							class="themed-box p-1 outline-amber-900 focus:outline-1"
+							class="themed-box p-1 outline-primary-900 focus:outline-1"
 						/>
 						{#if form?.invalid_model_file}
 							<p class="mt-1 text-sm">
@@ -193,7 +193,7 @@
 					</label>
 				</div>
 			</div>
-			<button type="submit" class="button md amber">Add journal entry!</button>
+			<button type="submit" class="button md primary">Add journal entry!</button>
 		</form>
 	{:else}
 		<p>
@@ -210,7 +210,7 @@
 			<div class="mt-1.5 flex">
 				<select
 					bind:value={sortDropdownValue}
-					class="themed-box fill-amber-50 text-sm ring-amber-900 placeholder:text-amber-900 active:ring-3"
+					class="themed-box fill-primary-50 text-sm ring-primary-900 placeholder:text-primary-900 active:ring-3"
 				>
 					<option value="descending">New to old</option>
 					<option value="ascending">Old to new</option>

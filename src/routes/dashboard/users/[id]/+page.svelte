@@ -15,7 +15,7 @@
 			<img
 				src={data.requestedUser.profilePicture}
 				alt="User profile pic"
-				class="aspect-square h-30 rounded-lg border-3 border-amber-800"
+				class="aspect-square h-30 rounded-lg border-3 border-primary-800"
 			/>
 			<h1 class="truncate text-2xl font-bold">{data.requestedUser.name}</h1>
 			<Calendar />
@@ -49,13 +49,13 @@
 					{#each data.projects as project}
 						<div class="flex w-full flex-row gap-1">
 							<a
-								class="grow truncate rounded-l-lg bg-amber-800 p-2 text-center outline-amber-50 transition-colors hover:bg-amber-700 hover:outline-2"
+								class="grow truncate rounded-l-lg bg-primary-800 p-2 text-center outline-primary-50 transition-colors hover:bg-primary-700 hover:outline-2"
 								href={`/dashboard/projects/${project.id}`}
 							>
 								{project.name}
 							</a>
 							<a
-								class={`rounded-r-lg bg-amber-900 p-2 text-center transition-colors ${project.url && project.url.length > 0 ? 'outline-amber-50 hover:bg-amber-800 hover:outline-2' : 'opacity-60'}`}
+								class={`rounded-r-lg bg-primary-900 p-2 text-center transition-colors ${project.url && project.url.length > 0 ? 'outline-primary-50 hover:bg-primary-800 hover:outline-2' : 'opacity-60'}`}
 								href={project.url && project.url.length > 0 ? project.url : null}
 								target="_blank"
 							>

@@ -16,7 +16,7 @@
 <form method="POST" class="flex flex-row gap-2 mt-2" use:enhance>
 	<a
 		href={`/dashboard/projects/${data.devlog.id}`}
-		class="button sm amber"
+		class="button sm primary"
 	>
 		Cancel
 	</a>

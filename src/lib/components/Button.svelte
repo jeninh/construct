@@ -1,9 +1,9 @@
 <script lang="ts">
 	let {
 		text,
-		bgcolor = 'bg-amber-600',
-		bgcolor_hover = 'bg-amber-500',
-		ringcolor = 'ring-amber-50',
+		bgcolor = 'bg-primary-600',
+		bgcolor_hover = 'bg-primary-500',
+		ringcolor = 'ring-primary-50',
 		disabled = false,
 		...other
 	} = $props();

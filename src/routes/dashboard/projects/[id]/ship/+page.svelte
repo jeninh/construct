@@ -26,7 +26,7 @@
 	unless it gets rejected.
 </p>
 <form method="POST" class="mt-2 flex flex-row gap-2" use:enhance>
-	<a href={`/dashboard/projects/${data.project.id}`} class="button sm amber">Cancel</a>
+	<a href={`/dashboard/projects/${data.project.id}`} class="button sm primary">Cancel</a>
 	<button class="button sm orange">
 		<Ship />
 		Ship

@@ -42,7 +42,7 @@
 	<p class="grow">{description}</p>
 	{#if url && url.length > 0}
 		<div class="my-2 flex">
-			<a class="button sm amber relative z-2" href={url} target="_blank">
+			<a class="button sm primary relative z-2" href={url} target="_blank">
 				<ExternalLink />
 				Link to project
 			</a>

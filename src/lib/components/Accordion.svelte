@@ -20,11 +20,11 @@
 </script>
 
 <div {...other}>
-	<div class="my-4 transition-all {state ? 'ring-2 ring-amber-600' : ''}">
+	<div class="my-4 transition-all {state ? 'ring-2 ring-primary-600' : ''}">
 		<button
 			class="{state
-				? 'bg-amber-900'
-				: 'bg-amber-800'} flex w-full cursor-pointer p-3 text-left transition-colors hover:bg-amber-900"
+				? 'bg-primary-900'
+				: 'bg-primary-800'} flex w-full cursor-pointer p-3 text-left transition-colors hover:bg-primary-900"
 			onclick={invertState}
 		>
 			<span class="grow {state ? 'font-semibold' : 'font-medium'} transition-all">{text}</span>
@@ -40,7 +40,7 @@
 				{/if}
 			</span>
 		</button>
-		<div class="bg-amber-800 {state ? 'p-3' : 'h-0 opacity-0'} overflow-hidden transition-all">
+		<div class="bg-primary-800 {state ? 'p-3' : 'h-0 opacity-0'} overflow-hidden transition-all">
 			{#if children}
 				{@render children?.()}
 			{/if}

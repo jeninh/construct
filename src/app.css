@@ -16,7 +16,29 @@
 	--background-color-quarternary: #94857d;
 	--font-color: #f3dcc6;
 
-	--color-primary-100: #f3dcc6;
+	/* --color-primary-50: #fffaeb;
+	--color-primary-100: #fff1c6;
+	--color-primary-200: #fee389;
+	--color-primary-300: #fecb3e;
+	--color-primary-400: #feb921;
+	--color-primary-500: #f89708;
+	--color-primary-600: #db7004;
+	--color-primary-700: #b64e07;
+	--color-primary-800: #943c0c;
+	--color-primary-900: #79320e;
+	--color-primary-950: #461802; */
+
+	--color-primary-50: #f7f7fb;
+	--color-primary-100: #f0eff8;
+	--color-primary-200: #e4e2f2;
+	--color-primary-300: #cdcae8;
+	--color-primary-400: #b3acd9;
+	--color-primary-500: #978ac8;
+	--color-primary-600: #7963b2;
+	--color-primary-700: #725ca5;
+	--color-primary-800: #5f4d8a;
+	--color-primary-900: #504171;
+	--color-primary-950: #32294c;
 }
 
 @layer base {
@@ -65,7 +87,7 @@
 		@apply flex cursor-pointer flex-row justify-center transition-colors;
 
 		&.sm {
-			@apply gap-1 p-2 text-sm hover:outline-2 focus:outline-2 rounded-sm;
+			@apply gap-1 rounded-sm p-2 text-sm hover:outline-2 focus:outline-2;
 
 			& .lucide-icon {
 				@apply size-[20px];
@@ -73,7 +95,7 @@
 		}
 
 		&.xs {
-			@apply gap-1 p-1.5 text-xs hover:outline-2 focus:outline-2 rounded-sm;
+			@apply gap-1 rounded-sm p-1.5 text-xs hover:outline-2 focus:outline-2;
 
 			& .lucide-icon {
 				@apply size-[16px];
@@ -81,7 +103,7 @@
 		}
 
 		&.md {
-			@apply gap-1 p-2 hover:outline-3 focus:outline-3 rounded-lg;
+			@apply gap-1 rounded-lg p-2 hover:outline-3 focus:outline-3;
 		}
 
 		&.disabled {
@@ -96,8 +118,8 @@
 			@apply bg-orange-800 outline-orange-50 hover:bg-orange-700;
 		}
 
-		&.amber {
-			@apply bg-amber-800 outline-amber-50 hover:bg-amber-700;
+		&.primary {
+			@apply bg-primary-800 outline-primary-50 hover:bg-primary-700;
 		}
 
 		&.dark-red {
@@ -106,12 +128,12 @@
 	}
 
 	.themed-input-light {
-		@apply border-3 border-amber-700 bg-amber-900 fill-amber-50 p-2 text-sm ring-amber-900 placeholder:text-amber-700 active:ring-3;
+		@apply border-3 border-primary-700 bg-primary-900 fill-primary-50 p-2 text-sm ring-primary-900 placeholder:text-primary-700 active:ring-3;
 	}
 }
 
 @layer utilities {
 	.themed-box {
-		@apply border-3 rounded-lg border-dashed border-amber-900 bg-amber-950;
+		@apply rounded-lg border-3 border-dashed border-primary-900 bg-primary-950;
 	}
 }

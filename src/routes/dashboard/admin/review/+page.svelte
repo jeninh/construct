@@ -36,7 +36,7 @@
 					<label class="flex flex-col gap-1">
 						<span class="font-medium">Status</span>
 						<select
-							class="h-40 grow border-3 border-amber-700 bg-amber-900 fill-amber-50 p-2 text-sm ring-amber-900 placeholder:text-amber-900 active:ring-3"
+							class="h-40 grow border-3 border-primary-700 bg-primary-900 fill-primary-50 p-2 text-sm ring-primary-900 placeholder:text-primary-900 active:ring-3"
 							name="status"
 							value={form?.fields.status ?? ['submitted']}
 							multiple
@@ -97,7 +97,7 @@
 						</div>
 					</label>
 				</div>
-				<button type="submit" class="button md amber mt-3 w-full">Apply!</button>
+				<button type="submit" class="button md primary mt-3 w-full">Apply!</button>
 			</form>
 		</div>
 		<div class="themed-box grow p-3 lg:min-w-[30%]">
@@ -159,7 +159,7 @@
 					<p class="grow">{project.project.description}</p>
 					{#if project.project.url && project.project.url.length > 0}
 						<div class="my-2 flex">
-							<a class="button sm amber relative z-2" href={project.project.url} target="_blank">
+							<a class="button sm primary relative z-2" href={project.project.url} target="_blank">
 								<ExternalLink />
 								Link to project
 							</a>

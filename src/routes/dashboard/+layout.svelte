@@ -5,7 +5,7 @@
 	let { children, data } = $props();
 </script>
 
-<ProgressBar class="text-amber-500" />
+<ProgressBar class="text-primary-500" />
 
 <div class="box-border flex h-[100svh] flex-row">
 	<Sidebar user={data.user} />

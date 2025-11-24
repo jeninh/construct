@@ -38,5 +38,5 @@
 			<p class="mt-1 text-sm">Invalid description, must be between 20 and 1000 characters</p>
 		{/if}
 	</div>
-	<button type="submit" class="button md amber">Update journal entry</button>
+	<button type="submit" class="button md primary">Update journal entry</button>
 </form>

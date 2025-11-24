@@ -23,7 +23,7 @@
 />
 <p class="mt-3">Are you sure you want to delete "{data.project.name}"? This is permanent.</p>
 <form method="POST" class="flex flex-row gap-2 mt-2" use:enhance>
-	<a href={`/dashboard/projects/${data.project.id}`} class="button sm amber">Cancel</a>
+	<a href={`/dashboard/projects/${data.project.id}`} class="button sm primary">Cancel</a>
 	<button class="button sm dark-red">
 		<Trash size={20} />
 		Delete

@@ -15,8 +15,8 @@
 			<div>
 				<Button
 					text="Create project"
-					bgcolor="bg-amber-800"
-					bgcolor_hover="bg-amber-700"
+					bgcolor="bg-primary-800"
+					bgcolor_hover="bg-primary-700"
 					href="/dashboard/projects/create"
 				/>
 			</div>
