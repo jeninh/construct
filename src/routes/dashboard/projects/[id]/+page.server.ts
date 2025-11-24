@@ -27,7 +27,7 @@ export async function load({ params }) {
 		throw error(404);
 	}
 
-	const queriedProject = await db
+	const [queriedProject] = await db
 		.select({
 			project: project,
 			timeSpent: sql<number>`COALESCE(SUM(${devlog.timeSpent}), 0)`
@@ -36,7 +36,7 @@ export async function load({ params }) {
 		.leftJoin(devlog, and(eq(project.id, devlog.projectId), eq(devlog.deleted, false)))
 		.where(and(eq(project.id, id), eq(project.deleted, false)))
 		.groupBy(project.id)
-		.get();
+		.limit(1);
 
 	if (!queriedProject) {
 		throw error(404);
@@ -92,7 +92,7 @@ export const actions = {
 
 		const id: number = parseInt(params.id);
 
-		const queriedProject = await db
+		const [queriedProject] = await db
 			.select()
 			.from(project)
 			.where(
@@ -103,7 +103,7 @@ export const actions = {
 					or(eq(project.status, 'building'), eq(project.status, 'rejected'))
 				)
 			)
-			.get();
+			.limit(1);
 
 		if (!queriedProject) {
 			throw error(404);

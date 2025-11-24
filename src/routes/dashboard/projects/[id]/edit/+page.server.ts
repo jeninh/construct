@@ -12,7 +12,7 @@ export async function load({ params, locals }) {
 		throw error(500);
 	}
 
-	const queriedProject = await db
+	const [queriedProject] = await db
 		.select()
 		.from(project)
 		.where(
@@ -23,7 +23,7 @@ export async function load({ params, locals }) {
 				or(eq(project.status, 'building'), eq(project.status, 'rejected'))
 			)
 		)
-		.get();
+		.limit(1);
 
 	if (!queriedProject) {
 		throw error(404);
@@ -47,7 +47,7 @@ export const actions = {
 
 		const id: number = parseInt(params.id);
 
-		const queriedProject = await db
+		const [queriedProject] = await db
 			.select()
 			.from(project)
 			.where(
@@ -58,7 +58,7 @@ export const actions = {
 					or(eq(project.status, 'building'), eq(project.status, 'rejected'))
 				)
 			)
-			.get();
+			.limit(1);
 
 		if (!queriedProject) {
 			throw error(404);

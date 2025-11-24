@@ -73,8 +73,21 @@ export async function GET(event) {
 	// const slackId = openidConnectDataJSON['https://slack.com/user_id'];
 	const profilePic =
 		'https://hc-cdn.hel1.your-objectstorage.com/s/v3/e4d4bc77e7a958820efea2ee55ebddf75d85993b_image.png'; // TODO: change when IDV properly implements slack
-	const { id, first_name, last_name, slack_id, ysws_eligible, verification_status } =
-		userDataJSON['identity']; // TODO: make this get the user's slack handle
+	const {
+		id,
+		first_name,
+		last_name,
+		slack_id
+		// ysws_eligible,
+		// verification_status
+	}: {
+		id: string;
+		first_name: string;
+		last_name: string;
+		slack_id: string;
+		ysws_eligible: boolean;
+		verification_status: string;
+	} = userDataJSON['identity']; // TODO: make this get the user's slack handle
 
 	// TODO: Check Hackatime API if they're banned and identity if they're verified
 	// https://identity.hackclub.com/api/external/check?slack_id=
@@ -104,7 +117,7 @@ export async function GET(event) {
 	// }
 
 	// Create user if doesn't exist
-	let databaseUser = await db.select().from(user).where(eq(user.idvId, id)).get();
+	let [databaseUser] = await db.select().from(user).where(eq(user.idvId, id)).limit(1);
 
 	if (databaseUser) {
 		// Update user (update name and profile picture and lastLoginAt on login)
@@ -134,7 +147,7 @@ export async function GET(event) {
 			hasSessionAuditLogs: true
 		});
 
-		databaseUser = await db.select().from(user).where(eq(user.idvId, id)).get();
+		[databaseUser] = await db.select().from(user).where(eq(user.idvId, id)).limit(1);
 
 		if (!databaseUser) {
 			// Something went _really_ wrong

@@ -1,10 +1,16 @@
-import { drizzle } from 'drizzle-orm/libsql';
-import { createClient } from '@libsql/client';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
 import * as schema from './schema';
 import { env } from '$env/dynamic/private';
 
-if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
+if (!env.DATABASE_HOST) throw new Error('DATABASE_HOST is not set');
 
-const client = createClient({ url: env.DATABASE_URL });
+const pool = new Pool({
+	host: process.env.DATABASE_HOST,
+	port: 5432,
+	user: 'postgres',
+	ssl: false,
+	database: 'postgres'
+});
 
-export const db = drizzle(client, { schema });
+export const db = drizzle(pool, { schema });

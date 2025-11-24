@@ -11,7 +11,7 @@ export async function load({ params, locals }) {
 		throw error(500);
 	}
 
-	const queriedProject = await db
+	const [queriedProject] = await db
 		.select({
 			id: project.id,
 			name: project.name,
@@ -32,7 +32,15 @@ export async function load({ params, locals }) {
 				or(eq(project.status, 'building'), eq(project.status, 'rejected'))
 			)
 		)
-		.get();
+		.groupBy(
+			project.id,
+			project.name,
+			project.description,
+			project.url,
+			project.createdAt,
+			project.status
+		)
+		.limit(1);
 
 	if (!queriedProject) {
 		throw error(404);
@@ -56,7 +64,7 @@ export const actions = {
 
 		const id: number = parseInt(params.id);
 
-		const queriedProject = await db
+		const [queriedProject] = await db
 			.select({
 				id: project.id,
 				timeSpent: sql<number>`COALESCE(SUM(${devlog.timeSpent}), 0)`,
@@ -72,7 +80,8 @@ export const actions = {
 					or(eq(project.status, 'building'), eq(project.status, 'rejected'))
 				)
 			)
-			.get();
+			.groupBy(project.id)
+			.limit(1);
 
 		if (!queriedProject) {
 			return error(404, { message: 'project not found' });

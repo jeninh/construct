@@ -10,25 +10,27 @@ export async function load({ locals }) {
 
 	const projects = await db
 		.select({
-			project: project,
+			id: project.id,
+			name: project.name,
+			description: project.description,
+			url: project.url,
+			createdAt: project.createdAt,
+			status: project.status,
 			timeSpent: sql<number>`COALESCE(SUM(${devlog.timeSpent}), 0)`
 		})
 		.from(project)
 		.leftJoin(devlog, and(eq(project.id, devlog.projectId), eq(devlog.deleted, false)))
 		.where(and(eq(project.userId, locals.user.id), eq(project.deleted, false)))
-		.groupBy(project.id);
+		.groupBy(
+			project.id,
+			project.name,
+			project.description,
+			project.url,
+			project.createdAt,
+			project.status
+		);
 
 	return {
-		projects: projects.map((project) => {
-			return {
-				id: project.project.id,
-				name: project.project.name,
-				description: project.project.description,
-				url: project.project.url,
-				createdAt: project.project.createdAt,
-				timeSpent: project.timeSpent,
-				status: project.project.status,
-			};
-		})
+		projects
 	};
 }

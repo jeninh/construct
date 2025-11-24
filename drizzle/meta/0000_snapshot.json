@@ -1,92 +1,85 @@
 {
-  "version": "6",
-  "dialect": "sqlite",
-  "id": "320487dc-2f12-4d27-b62e-69c98d7d0972",
+  "id": "ffa68e06-729f-4790-a6c7-49892ab2f0c2",
   "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "devlog": {
+    "public.devlog": {
       "name": "devlog",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
-        "project_id": {
-          "name": "project_id",
+        "projectId": {
+          "name": "projectId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "time_spent": {
-          "name": "time_spent",
+        "timeSpent": {
+          "name": "timeSpent",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "image": {
           "name": "image",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "model": {
           "name": "model",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "deleted": {
           "name": "deleted",
-          "type": "integer",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "devlog_user_id_user_id_fk": {
-          "name": "devlog_user_id_user_id_fk",
+        "devlog_userId_user_id_fk": {
+          "name": "devlog_userId_user_id_fk",
           "tableFrom": "devlog",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -94,12 +87,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "devlog_project_id_project_id_fk": {
-          "name": "devlog_project_id_project_id_fk",
+        "devlog_projectId_project_id_fk": {
+          "name": "devlog_projectId_project_id_fk",
           "tableFrom": "devlog",
           "tableTo": "project",
           "columnsFrom": [
-            "project_id"
+            "projectId"
           ],
           "columnsTo": [
             "id"
@@ -110,87 +103,81 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "project": {
+    "public.project": {
       "name": "project",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "url": {
           "name": "url",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "status": {
           "name": "status",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "'building'"
         },
         "deleted": {
           "name": "deleted",
-          "type": "integer",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'\"2025-11-23T22:05:52.878Z\"'"
+          "default": "now()"
         },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "integer",
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'\"2025-11-23T22:05:52.878Z\"'"
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "project_user_id_user_id_fk": {
-          "name": "project_user_id_user_id_fk",
+        "project_userId_user_id_fk": {
+          "name": "project_userId_user_id_fk",
           "tableFrom": "project",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -201,83 +188,78 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "project_audit_log": {
+    "public.project_audit_log": {
       "name": "project_audit_log",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "action_user_id": {
-          "name": "action_user_id",
+        "actionUserId": {
+          "name": "actionUserId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "project_id": {
-          "name": "project_id",
+        "projectId": {
+          "name": "projectId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "type": {
           "name": "type",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "url": {
           "name": "url",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "integer",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "project_audit_log_user_id_user_id_fk": {
-          "name": "project_audit_log_user_id_user_id_fk",
+        "project_audit_log_userId_user_id_fk": {
+          "name": "project_audit_log_userId_user_id_fk",
           "tableFrom": "project_audit_log",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -285,12 +267,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "project_audit_log_action_user_id_user_id_fk": {
-          "name": "project_audit_log_action_user_id_user_id_fk",
+        "project_audit_log_actionUserId_user_id_fk": {
+          "name": "project_audit_log_actionUserId_user_id_fk",
           "tableFrom": "project_audit_log",
           "tableTo": "user",
           "columnsFrom": [
-            "action_user_id"
+            "actionUserId"
           ],
           "columnsTo": [
             "id"
@@ -298,12 +280,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "project_audit_log_project_id_project_id_fk": {
-          "name": "project_audit_log_project_id_project_id_fk",
+        "project_audit_log_projectId_project_id_fk": {
+          "name": "project_audit_log_projectId_project_id_fk",
           "tableFrom": "project_audit_log",
           "tableTo": "project",
           "columnsFrom": [
-            "project_id"
+            "projectId"
           ],
           "columnsTo": [
             "id"
@@ -314,41 +296,47 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "session": {
+    "public.session": {
       "name": "session",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "text",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "integer",
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "session_user_id_user_id_fk": {
-          "name": "session_user_id_user_id_fk",
+        "session_userId_user_id_fk": {
+          "name": "session_userId_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -359,121 +347,66 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "session_audit_log": {
-      "name": "session_audit_log",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "timestamp": {
-          "name": "timestamp",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "session_audit_log_user_id_user_id_fk": {
-          "name": "session_audit_log_user_id_user_id_fk",
-          "tableFrom": "session_audit_log",
-          "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "t1_review": {
+    "public.t1_review": {
       "name": "t1_review",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "project_id": {
-          "name": "project_id",
+        "projectId": {
+          "name": "projectId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "feedback": {
           "name": "feedback",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "notes": {
           "name": "notes",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "action": {
           "name": "action",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "integer",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "t1_review_user_id_user_id_fk": {
-          "name": "t1_review_user_id_user_id_fk",
+        "t1_review_userId_user_id_fk": {
+          "name": "t1_review_userId_user_id_fk",
           "tableFrom": "t1_review",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -481,12 +414,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "t1_review_project_id_project_id_fk": {
-          "name": "t1_review_project_id_project_id_fk",
+        "t1_review_projectId_project_id_fk": {
+          "name": "t1_review_projectId_project_id_fk",
           "tableFrom": "t1_review",
           "tableTo": "project",
           "columnsFrom": [
-            "project_id"
+            "projectId"
           ],
           "columnsTo": [
             "id"
@@ -497,70 +430,67 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "t2_review": {
+    "public.t2_review": {
       "name": "t2_review",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
+        "userId": {
+          "name": "userId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "project_id": {
-          "name": "project_id",
+        "projectId": {
+          "name": "projectId",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "feedback": {
           "name": "feedback",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "notes": {
           "name": "notes",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "multiplier": {
           "name": "multiplier",
           "type": "real",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": 1
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "integer",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "default": "now()"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "t2_review_user_id_user_id_fk": {
-          "name": "t2_review_user_id_user_id_fk",
+        "t2_review_userId_user_id_fk": {
+          "name": "t2_review_userId_user_id_fk",
           "tableFrom": "t2_review",
           "tableTo": "user",
           "columnsFrom": [
-            "user_id"
+            "userId"
           ],
           "columnsTo": [
             "id"
@@ -568,12 +498,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "t2_review_project_id_project_id_fk": {
-          "name": "t2_review_project_id_project_id_fk",
+        "t2_review_projectId_project_id_fk": {
+          "name": "t2_review_projectId_project_id_fk",
           "tableFrom": "t2_review",
           "tableTo": "project",
           "columnsFrom": [
-            "project_id"
+            "projectId"
           ],
           "columnsTo": [
             "id"
@@ -584,52 +514,49 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "checkConstraints": {}
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
-    "user": {
+    "public.user": {
       "name": "user",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "serial",
           "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "idv_id": {
-          "name": "idv_id",
+        "idvId": {
+          "name": "idvId",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "slack_id": {
-          "name": "slack_id",
+        "slackId": {
+          "name": "slackId",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "profilePicture": {
           "name": "profilePicture",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "name": {
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "hackatime_trust": {
-          "name": "hackatime_trust",
+        "hackatimeTrust": {
+          "name": "hackatimeTrust",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "'blue'"
         },
         "trust": {
@@ -637,88 +564,84 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "'blue'"
         },
-        "has_session_audit_logs": {
-          "name": "has_session_audit_logs",
-          "type": "integer",
+        "hasSessionAuditLogs": {
+          "name": "hasSessionAuditLogs",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         },
-        "has_project_audit_logs": {
-          "name": "has_project_audit_logs",
-          "type": "integer",
+        "hasProjectAuditLogs": {
+          "name": "hasProjectAuditLogs",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         },
-        "has_t1_review": {
-          "name": "has_t1_review",
-          "type": "integer",
+        "hasT1Review": {
+          "name": "hasT1Review",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         },
-        "has_t2_review": {
-          "name": "has_t2_review",
-          "type": "integer",
+        "hasT2Review": {
+          "name": "hasT2Review",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "integer",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'\"2025-11-23T22:05:52.877Z\"'"
+          "default": "now()"
         },
-        "last_login_at": {
-          "name": "last_login_at",
-          "type": "integer",
+        "lastLoginAt": {
+          "name": "lastLoginAt",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "default": "'\"2025-11-23T22:05:52.877Z\"'"
+          "default": "now()"
         }
       },
-      "indexes": {
-        "user_idv_id_unique": {
-          "name": "user_idv_id_unique",
-          "columns": [
-            "idv_id"
-          ],
-          "isUnique": true
-        },
-        "user_slack_id_unique": {
-          "name": "user_slack_id_unique",
-          "columns": [
-            "slack_id"
-          ],
-          "isUnique": true
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
+      "uniqueConstraints": {
+        "user_idvId_unique": {
+          "name": "user_idvId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "idvId"
+          ]
+        },
+        "user_slackId_unique": {
+          "name": "user_slackId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slackId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
-  "views": {},
   "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "internal": {
-    "indexes": {}
+    "tables": {}
   }
 }

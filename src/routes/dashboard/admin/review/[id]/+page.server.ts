@@ -14,7 +14,7 @@ export async function load({ locals, params }) {
 
 	const id: number = parseInt(params.id);
 
-	const queriedProject = await db
+	const [queriedProject] = await db
 		.select({
 			project: {
 				id: project.id,
@@ -39,8 +39,20 @@ export async function load({ locals, params }) {
 		.leftJoin(devlog, and(eq(project.id, devlog.projectId), eq(devlog.deleted, false)))
 		.leftJoin(user, eq(user.id, project.userId))
 		.where(and(eq(project.id, id), eq(project.deleted, false)))
-		.groupBy(project.id)
-		.get();
+		.groupBy(
+			project.id,
+			project.name,
+			project.description,
+			project.url,
+			project.createdAt,
+			project.status,
+			user.id,
+			user.name,
+			user.slackId,
+			user.trust,
+			user.hackatimeTrust
+		)
+		.limit(1);
 
 	if (!queriedProject) {
 		throw error(404, { message: 'project not found' });
@@ -66,22 +78,18 @@ export const actions = {
 	// 	if (!locals.user.hasT1Review) {
 	// 		throw error(403, { message: 'get out, peasant' });
 	// 	}
-
 	// 	const data = await request.formData();
 	// 	const statusFilter = data.getAll('status') as (typeof project.status._.data)[];
-
 	// 	const projectFilter = data.getAll('project').map((projectId) => {
 	// 		const parsedInt = parseInt(projectId.toString());
 	// 		if (!parsedInt) throw error(400, { message: 'malformed project filter' });
 	// 		return parseInt(projectId.toString());
 	// 	});
-
 	// 	const userFilter = data.getAll('user').map((userId) => {
 	// 		const parsedInt = parseInt(userId.toString());
 	// 		if (!parsedInt) throw error(400, { message: 'malformed user filter' });
 	// 		return parseInt(userId.toString());
 	// 	});
-
 	// 	const queriedProject = await db
 	// 		.select({
 	// 			project: {
@@ -112,7 +120,6 @@ export const actions = {
 	// 		)
 	// 		.groupBy(project.id)
 	// 		.get();
-
 	// 	return {
 	// 		projects,
 	// 		fields: {

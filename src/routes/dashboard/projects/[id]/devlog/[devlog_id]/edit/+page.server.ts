@@ -13,23 +13,23 @@ export async function load({ params, locals }) {
 		throw error(500);
 	}
 
-	const queriedProject = await db
+	const [queriedProject] = await db
 		.select()
 		.from(project)
 		.where(and(eq(project.id, id), eq(project.userId, locals.user.id), eq(project.deleted, false)))
-		.get();
+		.limit(1);
 
 	if (!queriedProject) {
 		throw error(404);
 	}
 
-	const queriedDevlog = await db
+	const [queriedDevlog] = await db
 		.select()
 		.from(devlog)
 		.where(
 			and(eq(devlog.id, devlogId), eq(devlog.userId, locals.user.id), eq(devlog.deleted, false))
 		)
-		.get();
+		.limit(1);
 
 	if (!queriedDevlog) {
 		throw error(404);
@@ -62,25 +62,25 @@ export const actions = {
 		const id: number = parseInt(params.id);
 		const devlogId: number = parseInt(params.devlog_id);
 
-		const queriedProject = await db
+		const [queriedProject] = await db
 			.select()
 			.from(project)
 			.where(
 				and(eq(project.id, id), eq(project.userId, locals.user.id), eq(project.deleted, false))
 			)
-			.get();
+			.limit(1);
 
 		if (!queriedProject) {
 			throw error(404);
 		}
 
-		const queriedDevlog = await db
+		const [queriedDevlog] = await db
 			.select()
 			.from(devlog)
 			.where(
 				and(eq(devlog.id, devlogId), eq(devlog.userId, locals.user.id), eq(devlog.deleted, false))
 			)
-			.get();
+			.limit(1);
 
 		if (!queriedDevlog) {
 			throw error(404);

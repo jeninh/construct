@@ -109,5 +109,14 @@ async function getProjects(
 				userFilter.length > 0 ? inArray(project.userId, userFilter) : undefined
 			)
 		)
-		.groupBy(project.id);
+		.groupBy(
+			project.id,
+			project.name,
+			project.description,
+			project.url,
+			project.createdAt,
+			project.status,
+			user.id,
+			user.name
+		);
 }

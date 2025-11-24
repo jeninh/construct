@@ -5,13 +5,13 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 	ssr: {
-		// leave @libsql to be required at runtime by Node
-		external: ['@libsql/client']
+		// leave pg to be required at runtime by Node
+		external: ['pg']
 	},
 	build: {
 		rollupOptions: {
-			// also treat any @libsql/* imports as external during rollup
-			external: (id) => typeof id === 'string' && /^@libsql(\/|$)/.test(id)
+			// also treat any pg/* imports as external during rollup
+			external: (id) => typeof id === 'string' && /^pg(\/|$)/.test(id)
 		}
 	},
 	server: {

@@ -8,33 +8,39 @@ export async function load({ locals }) {
 		throw error(500);
 	}
 
-	const { projectCount } = (await db
+	const [{ projectCount }] = (await db
 		.select({
 			projectCount: count()
 		})
 		.from(project)
 		.where(and(eq(project.userId, locals.user.id), eq(project.deleted, false)))
-		.get()) ?? { projectCount: 0 };
+		.limit(1)) ?? [{ projectCount: 0 }];
 
-	const { devlogCount } = (await db
+	const [{ devlogCount }] = (await db
 		.select({
 			devlogCount: count()
 		})
 		.from(devlog)
 		.where(and(eq(devlog.userId, locals.user.id), eq(devlog.deleted, false)))
-		.get()) ?? { devlogCount: 0 };
+		.limit(1)) ?? [{ devlogCount: 0 }];
 
-	const { shipCount } = (await db
+	const [{ shipCount }] = (await db
 		.select({
 			shipCount: count()
 		})
 		.from(project)
-		.where(and(eq(project.userId, locals.user.id), ne(project.status, 'building'), eq(project.deleted, false)))
-		.get()) ?? { shipCount: 0 };
+		.where(
+			and(
+				eq(project.userId, locals.user.id),
+				ne(project.status, 'building'),
+				eq(project.deleted, false)
+			)
+		)
+		.limit(1)) ?? [{ shipCount: 0 }];
 
 	return {
 		projectCount,
 		devlogCount,
-        shipCount
+		shipCount
 	};
 }

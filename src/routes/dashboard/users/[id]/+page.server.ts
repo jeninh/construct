@@ -6,7 +6,7 @@ import { eq, and, desc } from 'drizzle-orm';
 export async function load({ locals, params }) {
 	const id: number = parseInt(params.id);
 
-	const requestedUser = await db.select().from(user).where(eq(user.id, id)).get();
+	const [requestedUser] = await db.select().from(user).where(eq(user.id, id)).limit(1);
 
 	if (!requestedUser) {
 		throw error(404);
@@ -34,7 +34,7 @@ export async function load({ locals, params }) {
 		})
 		.from(devlog)
 		.innerJoin(project, eq(devlog.projectId, project.id))
-		.where(and(eq(devlog.userId, 1), eq(devlog.deleted, false), eq(project.deleted, false)))
+		.where(and(eq(devlog.userId, id), eq(devlog.deleted, false), eq(project.deleted, false)))
 		.orderBy(desc(devlog.createdAt));
 
 	return {

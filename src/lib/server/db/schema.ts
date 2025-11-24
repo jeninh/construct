@@ -1,68 +1,61 @@
-import { integer, sqliteTable, text, real } from 'drizzle-orm/sqlite-core';
+import {
+	integer,
+	pgTable,
+	text,
+	real,
+	boolean,
+	serial,
+	timestamp
+} from 'drizzle-orm/pg-core';
 
-export const user = sqliteTable('user', {
-	id: integer('id').primaryKey(), // User ID
-	idvId: text('idv_id').notNull().unique(), // IDV ID
-	slackId: text('slack_id').notNull().unique(), // Slack ID
-	profilePicture: text('profilePicture').notNull(), // Profile pic URL
-	name: text('name').notNull(), // Username on Slack
+// TODO: convert enums to pgEnum
 
-	hackatimeTrust: text('hackatime_trust', { enum: ['green', 'blue', 'yellow', 'red'] })
+export const user = pgTable('user', {
+	id: serial().primaryKey(), // User ID
+	idvId: text().notNull().unique(), // IDV ID
+	slackId: text().notNull().unique(), // Slack ID
+	profilePicture: text().notNull(), // Profile pic URL
+	name: text().notNull(), // Username on Slack
+
+	hackatimeTrust: text({ enum: ['green', 'blue', 'yellow', 'red'] })
 		.notNull()
 		.default('blue'), // Hackatime trust
 	// TODO: implement this properly everywhere
 
-	trust: text('trust', { enum: ['green', 'blue', 'yellow', 'red'] })
+	trust: text({ enum: ['green', 'blue', 'yellow', 'red'] })
 		.notNull()
 		.default('blue'), // User trust, used if hackatime trust can't be used
 
-	hasSessionAuditLogs: integer('has_session_audit_logs', { mode: 'boolean' })
-		.notNull()
-		.default(false), // Has access to session audit logs
-	hasProjectAuditLogs: integer('has_project_audit_logs', { mode: 'boolean' })
-		.notNull()
-		.default(false), // Has access to project audit logs
+	hasSessionAuditLogs: boolean().notNull().default(false), // Has access to session audit logs
+	hasProjectAuditLogs: boolean().notNull().default(false), // Has access to project audit logs
 
-	hasT1Review: integer('has_t1_review', { mode: 'boolean' }).notNull().default(false), // Has access to t1 review
-	hasT2Review: integer('has_t2_review', { mode: 'boolean' }).notNull().default(false), // Has access to t2 review
+	hasT1Review: boolean().notNull().default(false), // Has access to t1 review
+	hasT2Review: boolean().notNull().default(false), // Has access to t2 review
 
-	createdAt: integer('created_at', { mode: 'timestamp_ms' })
-		.notNull()
-		.default(new Date(Date.now())), // Account creation timestamp
-	lastLoginAt: integer('last_login_at', { mode: 'timestamp_ms' })
-		.notNull()
-		.default(new Date(Date.now())) // Last login timestamp
+	createdAt: timestamp().notNull().defaultNow(), // Account creation timestamp
+	lastLoginAt: timestamp().notNull().defaultNow() // Last login timestamp
 });
 
-export const session = sqliteTable('session', {
-	id: text('id').primaryKey(),
-	userId: integer('user_id')
+export const session = pgTable('session', {
+	id: serial().primaryKey(),
+	token: text().notNull(),
+	userId: integer()
 		.notNull()
 		.references(() => user.id),
-	expiresAt: integer('expires_at', { mode: 'timestamp_ms' }).notNull()
+	expiresAt: timestamp().notNull()
 });
 
-// TODO: implement this
-export const sessionAuditLog = sqliteTable('session_audit_log', {
-	id: integer('id').primaryKey(),
-	userId: integer('user_id')
-		.notNull()
-		.references(() => user.id),
-	type: text('type', { enum: ['login', 'logout', 'session_expire'] }).notNull(),
-	timestamp: integer('timestamp', { mode: 'timestamp_ms' }).notNull()
-});
-
-export const project = sqliteTable('project', {
-	id: integer('id').primaryKey(),
-	userId: integer('user_id')
+export const project = pgTable('project', {
+	id: serial().primaryKey(),
+	userId: integer()
 		.notNull()
 		.references(() => user.id),
 
-	name: text('name'),
-	description: text('description'),
-	url: text('url'),
+	name: text(),
+	description: text(),
+	url: text(),
 
-	status: text('status', {
+	status: text({
 		enum: [
 			'building',
 			'submitted',
@@ -75,92 +68,89 @@ export const project = sqliteTable('project', {
 	})
 		.notNull()
 		.default('building'),
-	deleted: integer('deleted', { mode: 'boolean' }).notNull().default(false), // Projects aren't actually deleted, just marked as deleted (I cba to deal with foreign key delete issues for audit logs)
+	deleted: boolean().notNull().default(false), // Projects aren't actually deleted, just marked as deleted (I cba to deal with foreign key delete issues for audit logs)
 
-	createdAt: integer('created_at', { mode: 'timestamp_ms' })
-		.notNull()
-		.default(new Date(Date.now())),
-	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull().default(new Date(Date.now()))
+	createdAt: timestamp().notNull().defaultNow(),
+	updatedAt: timestamp().notNull().defaultNow()
 });
 
 // TODO: implement this
-export const projectAuditLog = sqliteTable('project_audit_log', {
-	id: integer('id').primaryKey(),
-	userId: integer('user_id')
+export const projectAuditLog = pgTable('project_audit_log', {
+	id: serial().primaryKey(),
+	userId: integer()
 		.notNull()
 		.references(() => user.id), // Project owner
-	actionUserId: integer('action_user_id')
+	actionUserId: integer()
 		.notNull()
 		.references(() => user.id), // User who carried out the action (can be different to userId if it was done by an admin)
-	projectId: integer('project_id')
+	projectId: integer()
 		.notNull()
 		.references(() => project.id),
-	type: text('type', { enum: ['create', 'update', 'delete'] }).notNull(),
+	type: text({ enum: ['create', 'update', 'delete'] }).notNull(),
 
-	name: text('name'),
-	description: text('description'),
-	url: text('url'),
+	name: text(),
+	description: text(),
+	url: text(),
 
-	timestamp: integer('timestamp', { mode: 'timestamp_ms' }).notNull()
+	timestamp: timestamp().notNull().defaultNow()
 });
 
 // T1 review: approve/reject
 // TODO: implement this
-export const t1Review = sqliteTable('t1_review', {
-	id: integer('id').primaryKey(),
-	userId: integer('user_id')
+export const t1Review = pgTable('t1_review', {
+	id: serial().primaryKey(),
+	userId: integer()
 		.notNull()
 		.references(() => user.id),
-	projectId: integer('project_id')
+	projectId: integer()
 		.notNull()
 		.references(() => project.id),
 
-	feedback: text('feedback'),
-	notes: text('notes'),
-	action: text('action', { enum: ['approve', 'reject', 'reject_lock'] }).notNull(),
+	feedback: text(),
+	notes: text(),
+	action: text({ enum: ['approve', 'reject', 'reject_lock'] }).notNull(),
 
-	timestamp: integer('timestamp', { mode: 'timestamp_ms' }).notNull()
+	timestamp: timestamp().notNull().defaultNow()
 });
 
 // TODO: implement this
-export const t2Review = sqliteTable('t2_review', {
-	id: integer('id').primaryKey(),
-	userId: integer('user_id')
+export const t2Review = pgTable('t2_review', {
+	id: serial().primaryKey(),
+	userId: integer()
 		.notNull()
 		.references(() => user.id),
-	projectId: integer('project_id')
+	projectId: integer()
 		.notNull()
 		.references(() => project.id),
 
-	feedback: text('feedback'),
-	notes: text('notes'),
-	multiplier: real('multiplier').notNull().default(1.0),
+	feedback: text(),
+	notes: text(),
+	multiplier: real().notNull().default(1.0),
 
-	timestamp: integer('timestamp', { mode: 'timestamp_ms' }).notNull()
+	timestamp: timestamp().notNull().defaultNow()
 });
 
-export const devlog = sqliteTable('devlog', {
-	id: integer('id').primaryKey(),
-	userId: integer('user_id').references(() => user.id),
-	projectId: integer('project_id')
+export const devlog = pgTable('devlog', {
+	id: serial().primaryKey(),
+	userId: integer().references(() => user.id),
+	projectId: integer()
 		.notNull()
 		.references(() => project.id),
 
-	description: text('description').notNull(),
-	timeSpent: integer('time_spent').notNull(), // Time spent in mins
-	image: text('image').notNull(),
-	model: text('model'),
+	description: text().notNull(),
+	timeSpent: integer().notNull(), // Time spent in mins
+	image: text().notNull(),
+	model: text(),
 
-	deleted: integer('deleted', { mode: 'boolean' }).notNull().default(false), // Works the same as project deletion
-	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
-	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
+	deleted: boolean().notNull().default(false), // Works the same as project deletion
+	createdAt: timestamp().notNull().defaultNow(),
+	updatedAt: timestamp().notNull().defaultNow()
 });
 
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type Project = typeof project.$inferSelect;
 
-export type SessionAuditLog = typeof sessionAuditLog.$inferSelect;
 export type ProjectAuditLog = typeof projectAuditLog.$inferSelect;
 
 export type T1Review = typeof t1Review.$inferSelect;
