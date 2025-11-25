@@ -1,14 +1,7 @@
-import {
-	integer,
-	pgTable,
-	text,
-	real,
-	boolean,
-	serial,
-	timestamp
-} from 'drizzle-orm/pg-core';
+import { integer, pgTable, pgEnum, text, boolean, serial, timestamp } from 'drizzle-orm/pg-core';
 
-// TODO: convert enums to pgEnum
+export const hackatimeTrustEnum = pgEnum('hackatime_trust', ['green', 'blue', 'yellow', 'red']);
+export const trustEnum = pgEnum('trust', ['green', 'blue', 'yellow', 'red']);
 
 export const user = pgTable('user', {
 	id: serial().primaryKey(), // User ID
@@ -17,14 +10,10 @@ export const user = pgTable('user', {
 	profilePicture: text().notNull(), // Profile pic URL
 	name: text().notNull(), // Username on Slack
 
-	hackatimeTrust: text({ enum: ['green', 'blue', 'yellow', 'red'] })
-		.notNull()
-		.default('blue'), // Hackatime trust
+	hackatimeTrust: hackatimeTrustEnum().notNull(), // Hackatime trust
 	// TODO: implement this properly everywhere
 
-	trust: text({ enum: ['green', 'blue', 'yellow', 'red'] })
-		.notNull()
-		.default('blue'), // User trust, used if hackatime trust can't be used
+	trust: trustEnum().notNull().default('blue'), // User trust, used if hackatime trust can't be used
 
 	hasSessionAuditLogs: boolean().notNull().default(false), // Has access to session audit logs
 	hasProjectAuditLogs: boolean().notNull().default(false), // Has access to project audit logs
@@ -45,6 +34,16 @@ export const session = pgTable('session', {
 	expiresAt: timestamp().notNull()
 });
 
+export const projectStatusEnum = pgEnum('status', [
+	'building',
+	'submitted',
+	't1_approved',
+	't2_approved',
+	'finalized',
+	'rejected',
+	'rejected_locked'
+]); // rejected == can still re-ship, rejected_locked == can't re-ship
+
 export const project = pgTable('project', {
 	id: serial().primaryKey(),
 	userId: integer()
@@ -55,24 +54,18 @@ export const project = pgTable('project', {
 	description: text(),
 	url: text(),
 
-	status: text({
-		enum: [
-			'building',
-			'submitted',
-			't1_approved',
-			't2_approved',
-			'finalized',
-			'rejected',
-			'rejected_locked'
-		] // rejected == can still re-ship, rejected_locked == can't re-ship
-	})
-		.notNull()
-		.default('building'),
+	status: projectStatusEnum().notNull().default('building'),
 	deleted: boolean().notNull().default(false), // Projects aren't actually deleted, just marked as deleted (I cba to deal with foreign key delete issues for audit logs)
 
 	createdAt: timestamp().notNull().defaultNow(),
 	updatedAt: timestamp().notNull().defaultNow()
 });
+
+export const projectAuditLogTypeEnum = pgEnum('project_audit_log_type', [
+	'create',
+	'update',
+	'delete'
+]);
 
 // TODO: implement this
 export const projectAuditLog = pgTable('project_audit_log', {
@@ -86,7 +79,7 @@ export const projectAuditLog = pgTable('project_audit_log', {
 	projectId: integer()
 		.notNull()
 		.references(() => project.id),
-	type: text({ enum: ['create', 'update', 'delete'] }).notNull(),
+	type: projectAuditLogTypeEnum().notNull(),
 
 	name: text(),
 	description: text(),
@@ -94,6 +87,8 @@ export const projectAuditLog = pgTable('project_audit_log', {
 
 	timestamp: timestamp().notNull().defaultNow()
 });
+
+export const t1ReviewActionEnum = pgEnum('t1_review_action', ['approve', 'reject', 'reject_lock']);
 
 // T1 review: approve/reject
 // TODO: implement this
@@ -108,27 +103,27 @@ export const t1Review = pgTable('t1_review', {
 
 	feedback: text(),
 	notes: text(),
-	action: text({ enum: ['approve', 'reject', 'reject_lock'] }).notNull(),
+	action: t1ReviewActionEnum().notNull(),
 
 	timestamp: timestamp().notNull().defaultNow()
 });
 
 // TODO: implement this
-export const t2Review = pgTable('t2_review', {
-	id: serial().primaryKey(),
-	userId: integer()
-		.notNull()
-		.references(() => user.id),
-	projectId: integer()
-		.notNull()
-		.references(() => project.id),
+// export const t2Review = pgTable('t2_review', {
+// 	id: serial().primaryKey(),
+// 	userId: integer()
+// 		.notNull()
+// 		.references(() => user.id),
+// 	projectId: integer()
+// 		.notNull()
+// 		.references(() => project.id),
 
-	feedback: text(),
-	notes: text(),
-	multiplier: real().notNull().default(1.0),
+// 	feedback: text(),
+// 	notes: text(),
+// 	multiplier: real().notNull().default(1.0),
 
-	timestamp: timestamp().notNull().defaultNow()
-});
+// 	timestamp: timestamp().notNull().defaultNow()
+// });
 
 export const devlog = pgTable('devlog', {
 	id: serial().primaryKey(),
@@ -154,4 +149,4 @@ export type Project = typeof project.$inferSelect;
 export type ProjectAuditLog = typeof projectAuditLog.$inferSelect;
 
 export type T1Review = typeof t1Review.$inferSelect;
-export type T2Review = typeof t2Review.$inferSelect;
+// export type T2Review = typeof t2Review.$inferSelect;

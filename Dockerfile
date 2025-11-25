@@ -1,7 +1,7 @@
 FROM node:22-bullseye-slim AS builder
 WORKDIR /app
 COPY package*.json ./
-ENV DATABASE_URL=file:local.db
+ENV DATABASE_HOST=localhost
 RUN npm ci
 COPY . .
 RUN npm run build
@@ -16,7 +16,7 @@ COPY drizzle.config.ts .
 COPY drizzle ./drizzle
 COPY server.js .
 ENV UPLOADS_PATH=/uploads
-ENV DATABASE_URL=file:local.db
+ENV DATABASE_HOST=localhost
 ENV BODY_SIZE_LIMIT=80M
 EXPOSE 3000
 ENV NODE_ENV=production

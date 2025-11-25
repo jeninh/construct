@@ -1,5 +1,5 @@
 {
-  "id": "ffa68e06-729f-4790-a6c7-49892ab2f0c2",
+  "id": "8a73d5a2-e26a-4e86-8088-49962197bd3f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -143,7 +143,8 @@
         },
         "status": {
           "name": "status",
-          "type": "text",
+          "type": "status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'building'"
@@ -222,7 +223,8 @@
         },
         "type": {
           "name": "type",
-          "type": "text",
+          "type": "project_audit_log_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -387,7 +389,8 @@
         },
         "action": {
           "name": "action",
-          "type": "text",
+          "type": "t1_review_action",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -417,90 +420,6 @@
         "t1_review_projectId_project_id_fk": {
           "name": "t1_review_projectId_project_id_fk",
           "tableFrom": "t1_review",
-          "tableTo": "project",
-          "columnsFrom": [
-            "projectId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.t2_review": {
-      "name": "t2_review",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "userId": {
-          "name": "userId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "projectId": {
-          "name": "projectId",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "feedback": {
-          "name": "feedback",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "notes": {
-          "name": "notes",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "multiplier": {
-          "name": "multiplier",
-          "type": "real",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 1
-        },
-        "timestamp": {
-          "name": "timestamp",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "t2_review_userId_user_id_fk": {
-          "name": "t2_review_userId_user_id_fk",
-          "tableFrom": "t2_review",
-          "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "t2_review_projectId_project_id_fk": {
-          "name": "t2_review_projectId_project_id_fk",
-          "tableFrom": "t2_review",
           "tableTo": "project",
           "columnsFrom": [
             "projectId"
@@ -554,14 +473,15 @@
         },
         "hackatimeTrust": {
           "name": "hackatimeTrust",
-          "type": "text",
+          "type": "hackatime_trust",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'blue'"
+          "notNull": true
         },
         "trust": {
           "name": "trust",
-          "type": "text",
+          "type": "trust",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
           "default": "'blue'"
@@ -633,7 +553,59 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.hackatime_trust": {
+      "name": "hackatime_trust",
+      "schema": "public",
+      "values": [
+        "green",
+        "blue",
+        "yellow",
+        "red"
+      ]
+    },
+    "public.project_audit_log_type": {
+      "name": "project_audit_log_type",
+      "schema": "public",
+      "values": [
+        "create",
+        "update",
+        "delete"
+      ]
+    },
+    "public.status": {
+      "name": "status",
+      "schema": "public",
+      "values": [
+        "building",
+        "submitted",
+        "t1_approved",
+        "t2_approved",
+        "finalized",
+        "rejected",
+        "rejected_locked"
+      ]
+    },
+    "public.t1_review_action": {
+      "name": "t1_review_action",
+      "schema": "public",
+      "values": [
+        "approve",
+        "reject",
+        "reject_lock"
+      ]
+    },
+    "public.trust": {
+      "name": "trust",
+      "schema": "public",
+      "values": [
+        "green",
+        "blue",
+        "yellow",
+        "red"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
