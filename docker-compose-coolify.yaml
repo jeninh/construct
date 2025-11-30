@@ -1,0 +1,10 @@
+services:
+  construct:
+    restart: always
+    expose:
+      - 3000
+    env_file:
+      - .env
+    pull_policy: always
+    image: ghcr.io/hackclub/construct:production
+networks: {}
