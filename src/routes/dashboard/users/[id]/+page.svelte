@@ -9,7 +9,7 @@
 
 <Head title={data.requestedUser.name} />
 
-<div class="flex h-full flex-row gap-10">
+<div class="flex h-full w-full flex-row gap-10">
 	<div class="flex w-50 min-w-50 flex-col gap-5 lg:w-65 lg:min-w-65">
 		<div class="themed-box flex flex-col items-center gap-2 p-5 shadow-lg/20">
 			<img
@@ -67,8 +67,8 @@
 			{/if}
 		</div>
 	</div>
-	<div>
-		<div class="flex grow flex-col gap-3">
+	<div class="w-full">
+		<div class="flex w-full grow flex-col gap-3">
 			<h1 class="mt-5 font-hero text-2xl font-medium">Activity</h1>
 			{#if data.devlogs.length > 0}
 				{#each data.devlogs as devlog}

@@ -256,6 +256,10 @@
 	.themed-input-light {
 		@apply border-3 border-primary-700 bg-primary-900 fill-primary-50 p-2 text-sm ring-primary-900 placeholder:text-primary-700 active:ring-3;
 	}
+
+	.checkbox {
+		@apply border-2 border-primary-600 bg-primary-900 ring-0 h-4 w-4 rounded-sm;
+	}
 }
 
 @layer utilities {
