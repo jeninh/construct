@@ -1,0 +1,1 @@
+ALTER TYPE "public"."t1_review_action" ADD VALUE 'add_comment' BEFORE 'reject';

@@ -99,7 +99,7 @@
 	{#if !editable}
 		<div class="flex gap-1">
 			<Lock size={20} />
-			<p>Journalling is locked as the project has been shipped</p>
+			<p>Journaling is locked as the project has been shipped</p>
 		</div>
 	{:else if data.validationConstraints.timeSpent.currentMax >= data.validationConstraints.timeSpent.min}
 		<form

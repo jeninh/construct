@@ -6,6 +6,10 @@ import { eq, and, desc } from 'drizzle-orm';
 export async function load({ locals, params }) {
 	const id: number = parseInt(params.id);
 
+	if (!id) {
+		throw error(404);
+	}
+
 	const [requestedUser] = await db.select().from(user).where(eq(user.id, id)).limit(1);
 
 	if (!requestedUser) {

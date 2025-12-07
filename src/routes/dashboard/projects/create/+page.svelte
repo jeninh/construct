@@ -24,7 +24,7 @@
 >
 	<div>
 		<label class="flex flex-col gap-1">
-			Project name*
+			Project name
 			<input
 				type="text"
 				name="name"
@@ -40,7 +40,7 @@
 	</div>
 	<div>
 		<label class="flex flex-col gap-1">
-			Description
+			<span>Description <span class="inline opacity-50">(optional)</span></span>
 			<textarea
 				name="description"
 				placeholder="A couple sentences to describe your project"
@@ -54,7 +54,7 @@
 	</div>
 	<div>
 		<label class="flex flex-col gap-1">
-			Printables URL
+			<span>Printables URL <span class="inline opacity-50">(optional)</span></span>
 			<input
 				type="text"
 				name="url"
@@ -67,11 +67,7 @@
 			<p class="text-sm">Invalid URL</p>
 		{/if}
 	</div>
-	<button
-		type="submit"
-		class="mt-3 button md primary shadow-lg"
-		disabled={formPending}
-	>
+	<button type="submit" class="button md primary mt-3 shadow-lg" disabled={formPending}>
 		Create!
 	</button>
 </form>

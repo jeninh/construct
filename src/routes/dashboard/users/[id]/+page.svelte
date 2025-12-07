@@ -71,14 +71,16 @@
 		<div class="flex w-full grow flex-col gap-3">
 			<h1 class="mt-5 font-hero text-2xl font-medium">Activity</h1>
 			{#if data.devlogs.length > 0}
-				{#each data.devlogs as devlog}
-					<Devlog
-						{devlog}
-						projectId={devlog.projectId}
-						projectName={devlog.projectName}
-						showModifyButtons={false}
-					/>
-				{/each}
+				<div class="mb-5">
+					{#each data.devlogs as devlog}
+						<Devlog
+							{devlog}
+							projectId={devlog.projectId}
+							projectName={devlog.projectName}
+							showModifyButtons={false}
+						/>
+					{/each}
+				</div>
 			{:else}
 				<div class="flex grow items-center justify-center">
 					<div class="themed-box p-3 shadow-lg/20">
@@ -87,7 +89,5 @@
 				</div>
 			{/if}
 		</div>
-		<!-- not sure why it doesn't want to work otherwise, it's really weird -->
-		<div class="invisible text-xs">hello :)</div>
 	</div>
 </div>
