@@ -54,7 +54,7 @@
 	</div>
 	<div>
 		<label class="flex flex-col gap-1">
-			URL
+			Printables URL
 			<input
 				type="text"
 				name="url"
