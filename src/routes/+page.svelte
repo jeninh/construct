@@ -217,7 +217,11 @@
 	});
 
 	$effect(() => {
-		if (!showStickersSection || keyringInitialized || !keyringModel) {
+		if (!showStickersSection) {
+			return;
+		}
+
+		if (keyringInitialized || !keyringModel) {
 			return;
 		}
 
@@ -381,7 +385,10 @@
 	<button
 		class="button md fixed top-4 right-4 z-50 border-3 border-orange-900 bg-orange-800 outline-orange-50 transition-all hover:scale-105 hover:bg-orange-700 animate-[bounce_2.5s_ease-in-out_infinite]"
 		style="transform: rotate(-2deg);"
-		onclick={() => (showStickersSection = !showStickersSection)}
+		onclick={() => {
+			keyringInitialized = false;
+			showStickersSection = !showStickersSection;
+		}}
 	>
 		Free swag!
 	</button>
