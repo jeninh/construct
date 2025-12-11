@@ -35,6 +35,8 @@ export const user = pgTable('user', {
 
 	hasAdmin: boolean().notNull().default(false), // Has access to admin section
 
+	isPrinter: boolean().notNull().default(false), // Is a printer
+
 	createdAt: timestamp().notNull().defaultNow(), // Account creation timestamp
 	lastLoginAt: timestamp().notNull().defaultNow() // Last login timestamp
 });
