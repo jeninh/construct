@@ -17,7 +17,6 @@
 	let sortDevlogsAscending = $derived.by(() => sortDropdownValue == 'ascending');
 
 	let editable = $derived(data.project.status == 'building' || data.project.status == 'rejected');
-	let shippable = $derived(data.devlogs.length > 0);
 
 	let description = $state(form?.fields?.description ?? '');
 
@@ -57,7 +56,7 @@
 	<div class="my-2 flex">
 		<a class="button sm primary" href={data.project.url} target="_blank">
 			<ExternalLink />
-			Link to project
+			Printables page
 		</a>
 	</div>
 {/if}
@@ -74,13 +73,9 @@
 			Edit
 		</a>
 		<a
-			href={editable && shippable ? `/dashboard/projects/${data.project.id}/ship` : null}
-			class={`button sm orange ${editable && shippable ? '' : 'disabled'}`}
-			title={editable && shippable
-				? null
-				: shippable
-					? 'Currently locked as the project has been shipped'
-					: 'Currently locked as you need at least one journal entry to ship'}
+			href={editable ? `/dashboard/projects/${data.project.id}/ship` : null}
+			class={`button sm orange ${editable ? '' : 'disabled'}`}
+			title={editable ? null : 'Currently locked as the project has been shipped'}
 		>
 			<Ship />
 			Ship

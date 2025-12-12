@@ -40,7 +40,7 @@
 						{#if data.project.project.url && data.project.project.url.length > 0}
 							<a class="button sm primary" href={data.project.project.url} target="_blank">
 								<ExternalLink />
-								Link to project
+								Printables page
 							</a>
 						{:else}
 							<p class="font-bold">No Printables link</p>

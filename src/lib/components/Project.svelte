@@ -44,7 +44,7 @@
 		<div class="my-2 flex">
 			<a class="button sm primary relative z-2" href={url} target="_blank">
 				<ExternalLink />
-				Link to project
+				Printables page
 			</a>
 		</div>
 	{:else}
