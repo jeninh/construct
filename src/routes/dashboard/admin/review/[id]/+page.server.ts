@@ -3,6 +3,7 @@ import { project, user, devlog, t1Review } from '$lib/server/db/schema.js';
 import { error, redirect } from '@sveltejs/kit';
 import { eq, and, asc, sql } from 'drizzle-orm';
 import type { Actions } from './$types';
+import { sendSlackDM } from '$lib/server/slack.js';
 
 export async function load({ locals, params }) {
 	if (!locals.user) {
@@ -101,7 +102,9 @@ export const actions = {
 
 		const [queriedProject] = await db
 			.select({
-				id: project.id
+				id: project.id,
+				name: project.name,
+				userId: project.userId
 			})
 			.from(project)
 			.where(and(eq(project.deleted, false), eq(project.id, id)));
@@ -128,19 +131,24 @@ export const actions = {
 		});
 
 		let status: typeof project.status._.data | undefined = undefined;
+		let statusMessage = '';
 
 		switch (action) {
 			case 'approve':
 				status = 't1_approved';
+				statusMessage = 'approved';
 				break;
 			case 'approve_no_print':
 				status = 'printed';
+				statusMessage = 'approved (no print)';
 				break;
 			case 'reject':
 				status = 'rejected';
+				statusMessage = 'rejected';
 				break;
 			case 'reject_lock':
 				status = 'rejected_locked';
+				statusMessage = 'rejected (locked)';
 				break;
 		}
 
@@ -151,6 +159,22 @@ export const actions = {
 					status
 				})
 				.where(eq(project.id, id));
+
+		const [projectUser] = await db
+			.select({
+				slackId: user.slackId
+			})
+			.from(user)
+			.where(eq(user.id, queriedProject.userId));
+
+		if (projectUser) {
+			const feedbackText = feedback ? `\n\nFeedback from reviewer:\n${feedback}` : '';
+			const encouragement = statusMessage === 'rejected' ? ' You can try again whenever you\'re ready.' : statusMessage === 'rejected (locked)' ? ' Unfortunately, you can\'t resubmit this project. This decision is final. ' : ' Great work! :tada:';
+			await sendSlackDM(
+				projectUser.slackId,
+				`Hiya :wave: Your project <https://construct.hackclub.com/dashboard/projects/${queriedProject.id}|${queriedProject.name}> has been ${statusMessage}!${feedbackText}${encouragement}`
+			);
+		}
 
 		return redirect(302, '/dashboard/admin/review');
 	}

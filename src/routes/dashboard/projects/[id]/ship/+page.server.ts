@@ -1,8 +1,9 @@
 import { db } from '$lib/server/db/index.js';
-import { devlog, project } from '$lib/server/db/schema.js';
+import { devlog, project, user } from '$lib/server/db/schema.js';
 import { error, redirect } from '@sveltejs/kit';
 import { eq, and, or, sql } from 'drizzle-orm';
 import type { Actions } from './$types';
+import { sendSlackDM } from '$lib/server/slack.js';
 
 export async function load({ params, locals }) {
 	const id: number = parseInt(params.id);
@@ -62,6 +63,7 @@ export const actions = {
 		const [queriedProject] = await db
 			.select({
 				id: project.id,
+				name: project.name,
 				description: project.description,
 				url: project.url,
 				timeSpent: sql<number>`COALESCE(SUM(${devlog.timeSpent}), 0)`,
@@ -105,6 +107,11 @@ export const actions = {
 					eq(project.deleted, false)
 				)
 			);
+
+		await sendSlackDM(
+			locals.user.slackId,
+			`Hiya :wave: Your project <https://construct.hackclub.com/dashboard/projects/${queriedProject.id}|${queriedProject.name}> has been shipped and is now under review. We'll take a look and get back to you soon! :rocket:`
+		);
 
 		return redirect(303, '/dashboard/projects');
 	}
