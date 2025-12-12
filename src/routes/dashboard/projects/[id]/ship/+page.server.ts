@@ -1,9 +1,10 @@
 import { db } from '$lib/server/db/index.js';
-import { devlog, project, user } from '$lib/server/db/schema.js';
-import { error, redirect } from '@sveltejs/kit';
+import { devlog, project } from '$lib/server/db/schema.js';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { eq, and, or, sql } from 'drizzle-orm';
 import type { Actions } from './$types';
 import { sendSlackDM } from '$lib/server/slack.js';
+import { isValidUrl } from '$lib/utils';
 
 export async function load({ params, locals }) {
 	const id: number = parseInt(params.id);
@@ -53,12 +54,15 @@ export async function load({ params, locals }) {
 }
 
 export const actions = {
-	default: async ({ locals, params }) => {
+	default: async ({ locals, params, request }) => {
 		if (!locals.user) {
 			throw error(500);
 		}
 
 		const id: number = parseInt(params.id);
+
+		const data = await request.formData();
+		const url = data.get('url');
 
 		const [queriedProject] = await db
 			.select({
@@ -86,18 +90,26 @@ export const actions = {
 			return error(404, { message: 'project not found' });
 		}
 
-		// Make sure it has atleast 2h
+		// Make sure it has at least 2h
 		if (queriedProject.timeSpent < 120) {
 			return error(400, { message: 'minimum 2h needed to ship' });
 		}
 
-		if (queriedProject.description == '' || queriedProject.url == '') {
+		if (queriedProject.description == '') {
 			return error(400, { message: 'project must have a description and Printables url' });
+		}
+
+		if (!(!url || (url.toString().trim().length < 8000 && isValidUrl(url.toString().trim())))) {
+			return fail(400, {
+				fields: { url },
+				invalid_url: true
+			});
 		}
 
 		await db
 			.update(project)
 			.set({
+				url: url?.toString(),
 				status: 'submitted'
 			})
 			.where(
