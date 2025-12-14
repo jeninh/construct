@@ -3,7 +3,7 @@
 	import { ThreeMFLoader, OrbitControls } from 'three/examples/jsm/Addons.js';
 	import { onMount } from 'svelte';
 
-	let { identifier, modelUrl } = $props();
+	let { identifier, modelUrl, lineColor = 0x94857d } = $props();
 
 	// Necessary for camera/plane rotation
 	let degree = Math.PI / 180;
@@ -51,16 +51,16 @@
 		controls.update();
 
 		// Lighting
-		const hemisphere = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.1);
+		const hemisphere = new THREE.HemisphereLight(0xffffff, 0xffffff, 1.6);
 		scene.add(hemisphere);
 
-		const directional = new THREE.DirectionalLight(0xffffff, 1.1);
+		const directional = new THREE.DirectionalLight(0xffffff, 2);
 		directional.castShadow = true;
 		directional.shadow.mapSize.width = 2048;
 		directional.shadow.mapSize.height = 2048;
 		scene.add(directional);
 
-		const directional2 = new THREE.DirectionalLight(0xffffff, 1.1);
+		const directional2 = new THREE.DirectionalLight(0xffffff, 2);
 		directional2.castShadow = true;
 		directional2.shadow.mapSize.width = 2048;
 		directional2.shadow.mapSize.height = 2048;
@@ -78,15 +78,6 @@
 				camera.updateProjectionMatrix();
 			}
 		}
-
-		var meshMaterial = new THREE.MeshStandardMaterial({
-			transparent: true,
-			opacity: 0.9,
-			color: 0xb2a090,
-			roughness: 0.5,
-			flatShading: false,
-			side: THREE.DoubleSide
-		});
 
 		function parseObject(object: THREE.Group<THREE.Object3DEventMap>) {
 			object = object as THREE.Group<THREE.Object3DEventMap> & { children: THREE.Mesh[] };
@@ -145,7 +136,7 @@
 				const lines = new THREE.LineSegments(
 					edges,
 					new THREE.LineBasicMaterial({
-						color: 0xf3dcc6,
+						color: lineColor,
 						linewidth: 1,
 						polygonOffset: true,
 						polygonOffsetFactor: -1,

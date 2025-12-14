@@ -128,6 +128,7 @@
 			<ThreeMFPreview
 				identifier="project-model"
 				modelUrl={data.s3PublicUrl + '/' + data.project.modelFile}
+				lineColor={0x94857d}
 			/>
 		</div>
 	{/if}
