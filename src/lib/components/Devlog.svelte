@@ -56,7 +56,10 @@
 			<div
 				class="relative max-h-100 w-full grow border-3 border-primary-900 lg:w-100 lg:max-w-[60%]"
 			>
-				<Spinny3DPreview identifier={`canvas-${devlog.id}`} modelUrl={page.data.s3PublicUrl + '/' + devlog.model} />
+				<Spinny3DPreview
+					identifier={`canvas-${devlog.id}`}
+					modelUrl={page.data.s3PublicUrl + '/' + devlog.model}
+				/>
 			</div>
 		{/if}
 	</div>

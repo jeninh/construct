@@ -291,7 +291,11 @@
 						<div
 							class="mb-4 flex h-56 items-center justify-center overflow-hidden rounded-lg border-2 border-primary-900 bg-primary-900"
 						>
-							<Spinny3DPreview identifier="keyring" modelUrl={keyringModel} />
+							<Spinny3DPreview
+								identifier="keyring"
+								modelUrl={keyringModel}
+								sizeCutoff={8 * 1024 * 1024}
+							/>
 						</div>
 						<div class="text-center">
 							<h3 class="mb-2 text-xl font-bold">Construct Keyring</h3>

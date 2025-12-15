@@ -100,6 +100,7 @@
 				<Spinny3DPreview
 					identifier="model"
 					modelUrl={`${data.s3PublicUrl}/${data.project.project.modelFile}`}
+					sizeCutoff={8*1024*1024}
 				/>
 			</div>
 

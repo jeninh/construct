@@ -4,7 +4,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import fileSizeFromUrl from '$lib/utils';
 
-	let { identifier, modelUrl, lineColor = 0x94857d } = $props();
+	let { identifier, modelUrl, lineColor = 0x94857d, sizeCutoff = 2.5 * 1024 * 1024 } = $props();
 
 	let loadedPercent: number = $state(0);
 	let showLoadButton: boolean = $state(false);
@@ -298,7 +298,7 @@
 		fileSizeFromUrl(modelUrl).then((size) => {
 			fileSize = size;
 
-			if (size <= 8 * 1024 * 1024) {
+			if (size <= sizeCutoff) {
 				loadModel();
 			} else {
 				showLoadButton = true;
