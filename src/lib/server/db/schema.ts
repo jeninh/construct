@@ -140,22 +140,30 @@ export const t1Review = pgTable('t1_review', {
 	timestamp: timestamp().notNull().defaultNow()
 });
 
-// TODO: implement this
-// export const t2Review = pgTable('t2_review', {
-// 	id: serial().primaryKey(),
-// 	userId: integer()
-// 		.notNull()
-// 		.references(() => user.id),
-// 	projectId: integer()
-// 		.notNull()
-// 		.references(() => project.id),
+export const t2ReviewActionEnum = pgEnum('t2_review_action', [
+	'approve',
+	// 'approve_no_print',
+	// 'add_comment',
+	'reject',
+	// 'reject_lock'
+]);
 
-// 	feedback: text(),
-// 	notes: text(),
-// 	multiplier: real().notNull().default(1.0),
+export const t2Review = pgTable('t2_review', {
+	id: serial().primaryKey(),
+	userId: integer()
+		.notNull()
+		.references(() => user.id),
+	projectId: integer()
+		.notNull()
+		.references(() => project.id),
 
-// 	timestamp: timestamp().notNull().defaultNow()
-// });
+	feedback: text(),
+	notes: text(),
+	action: t2ReviewActionEnum().notNull(),
+	currencyMultiplier: real().notNull().default(1.0),
+
+	timestamp: timestamp().notNull().defaultNow()
+});
 
 export const devlog = pgTable('devlog', {
 	id: serial().primaryKey(),
