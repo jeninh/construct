@@ -53,5 +53,5 @@ export default function fileSizeFromUrl(url: string): Promise<number> {
 }
 
 export function formatMinutes(mins: number | null) {
-	return Math.floor((mins ?? 0) / 60) + 'h ' + ((mins ?? 0) % 60) + 'min';
+	return Math.floor((mins ?? 0) / 60) + 'h ' + Math.floor((mins ?? 0) % 60) + 'min';
 }
