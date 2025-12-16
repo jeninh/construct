@@ -132,15 +132,22 @@ export async function GET(event) {
 	// Check Hackatime trust
 	const hackatimeTrust = (
 		await (
-			await fetch(`https://hackatime.hackclub.com/api/v1/users/${slack_id}/trust_factor`)
+			await fetch(`https://hackatime.hackclub.com/api/v1/users/${slack_id}/trust_factor`, {
+				headers: env.RACK_ATTACK_BYPASS
+					? {
+							RACK_ATTACK_BYPASS: env.RACK_ATTACK_BYPASS
+						}
+					: {}
+			})
 		).json()
 	)['trust_level'];
 
 	if (!hackatimeTrust) {
 		console.error();
-		return error(503, {
-			message: 'failed to fetch hackatime trust factor, please try again later'
-		});
+		return redirect(302, '/auth/create-hackatime-account');
+		// return error(503, {
+		// 	message: 'failed to fetch hackatime trust factor, please try again later'
+		// });
 	} else if (hackatimeTrust === 'red') {
 		// Prevent login
 		return redirect(302, 'https://fraud.land');
