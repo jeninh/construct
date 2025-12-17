@@ -40,6 +40,7 @@
 			</span>
 		</li>
 		<li>Blender</li>
+		<li>Solvespace</li>
 	</ul>
 	<p class="mt-2">No TinkerCAD please.</p>
 	<p class="mt-1">
