@@ -68,6 +68,10 @@ export async function GET(event) {
 		// verification_status: string;
 	} = userDataJSON['identity'];
 
+	if (!ysws_eligible) {
+		return redirect(302, '/auth/ineligible');
+	}
+
 	// Get slack data
 	const slackProfileURL = new URL('https://slack.com/api/users.info');
 	slackProfileURL.searchParams.set('user', slack_id);
@@ -151,10 +155,6 @@ export async function GET(event) {
 	} else if (hackatimeTrust === 'red') {
 		// Prevent login
 		return redirect(302, 'https://fraud.land');
-	}
-
-	if (!ysws_eligible) {
-		return redirect(302, '/auth/ineligible');
 	}
 
 	// Create user if doesn't exist
