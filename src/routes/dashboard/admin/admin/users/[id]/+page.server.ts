@@ -1,8 +1,9 @@
 import { db } from '$lib/server/db/index.js';
 import { user, devlog, session } from '$lib/server/db/schema.js';
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import { and, eq, sql } from 'drizzle-orm';
 import type { Actions } from './$types';
+import { createSession, DAY_IN_MS, generateSessionToken, SESSION_EXPIRY_DAYS, setSessionTokenCookie } from '$lib/server/auth';
 
 export async function load({ locals, params }) {
 	if (!locals.user) {
@@ -57,7 +58,7 @@ export const actions = {
 				isPrinter: isPrinter === 'on',
 				hasT1Review: hasT1Review === 'on',
 				hasT2Review: hasT2Review === 'on',
-				hasAdmin: hasAdmin === 'on',
+				hasAdmin: hasAdmin === 'on'
 			})
 			.where(eq(user.id, id));
 
@@ -191,8 +192,31 @@ export const actions = {
 
 		const id: number = parseInt(params.id);
 
+		const [queriedUser] = await db.select().from(user).where(eq(user.id, id));
+
+		if (!queriedUser) {
+			throw error(404, { message: 'user not found' });
+		}
+
 		// Log out user
 		await db.delete(session).where(eq(session.userId, id));
+
+		return {
+			queriedUser
+		};
+	},
+
+	impersonate: async (event) => {
+		const { locals, params } = event;
+
+		if (!locals.user) {
+			throw error(500);
+		}
+		if (!locals.user.hasAdmin) {
+			throw error(403, { message: 'get out, peasant' });
+		}
+
+		const id: number = parseInt(params.id);
 
 		const [queriedUser] = await db.select().from(user).where(eq(user.id, id));
 
@@ -200,8 +224,14 @@ export const actions = {
 			throw error(404, { message: 'user not found' });
 		}
 
-		return {
-			queriedUser
-		};
+		const sessionToken = generateSessionToken();
+		await createSession(sessionToken, id);
+		setSessionTokenCookie(
+			event,
+			sessionToken,
+			new Date(Date.now() + DAY_IN_MS * SESSION_EXPIRY_DAYS)
+		);
+
+		return redirect(302, '/dashboard');
 	}
 } satisfies Actions;

@@ -11,6 +11,7 @@
 	let hackatimePending = $state(false);
 	let currencyPending = $state(false);
 	let privilegesPending = $state(false);
+	let impersonatePending = $state(false);
 	let logoutPending = $state(false);
 </script>
 
@@ -46,6 +47,23 @@
 					>
 						<button type="submit" class="button md primary" disabled={hackatimePending}
 							>Refresh Hackatime trust</button
+						>
+					</form>
+				</div>
+				<div>
+					<form
+						action="?/impersonate"
+						method="POST"
+						use:enhance={() => {
+							impersonatePending = true;
+							return async ({ update }) => {
+								await update();
+								impersonatePending = false;
+							};
+						}}
+					>
+						<button type="submit" class="button md primary" disabled={impersonatePending}
+							>Impersonate</button
 						>
 					</form>
 				</div>
