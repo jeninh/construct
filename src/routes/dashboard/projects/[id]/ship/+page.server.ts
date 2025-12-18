@@ -80,11 +80,14 @@ export const actions = {
 		const editorFile = data.get('editor_file') as File;
 		const modelFile = data.get('model_file') as File;
 
+		const printablesUrlString =
+			printablesUrl && printablesUrl.toString() ? sanitizeUrl(printablesUrl.toString()) : null;
+
 		const printablesUrlValid =
-			printablesUrl &&
-			printablesUrl.toString() &&
-			printablesUrl.toString().trim().length < 8000 &&
-			isValidUrl(printablesUrl.toString().trim());
+			printablesUrlString &&
+			printablesUrlString.trim().length < 8000 &&
+			isValidUrl(printablesUrlString.trim()) &&
+			printablesUrlString !== 'about:blank';
 
 		if (!printablesUrlValid) {
 			return fail(400, {
@@ -92,7 +95,7 @@ export const actions = {
 			});
 		}
 
-		const printablesUrlObj = new URL(printablesUrl.toString().trim());
+		const printablesUrlObj = new URL(printablesUrlString.trim());
 
 		const pathMatch = printablesUrlObj.pathname.match(/\/model\/(\d+)/);
 		const modelId = pathMatch ? pathMatch[1] : '';
@@ -155,12 +158,13 @@ export const actions = {
 
 		// Editor URL
 		const editorUrlExists = editorUrl && editorUrl.toString();
-		const editorUrlValid =
-			editorUrlExists &&
-			editorUrl.toString().trim().length < 8000 &&
-			isValidUrl(editorUrl.toString().trim());
 
-		if (editorUrlExists && !editorUrlValid) {
+		const editorUrlString = editorUrlExists ? sanitizeUrl(editorUrl.toString()) : null;
+
+		const editorUrlValid =
+			editorUrlString && editorUrlString.trim().length < 8000 && isValidUrl(editorUrlString.trim());
+
+		if (editorUrlExists && (!editorUrlValid || editorUrlString === 'about:blank')) {
 			return fail(400, {
 				invalid_editor_url: true
 			});
@@ -270,9 +274,9 @@ export const actions = {
 			.update(project)
 			.set({
 				status: 'submitted',
-				url: sanitizeUrl(printablesUrl.toString()),
+				url: printablesUrlString,
 				editorFileType: editorUrlExists ? 'url' : 'upload',
-				editorUrl: editorUrlExists ? sanitizeUrl(editorUrl.toString()) : undefined,
+				editorUrl: editorUrlExists ? editorUrlString : undefined,
 				uploadedFileUrl: editorFileExists ? editorFilePath : undefined,
 
 				modelFile: modelPath
@@ -288,10 +292,10 @@ export const actions = {
 		await db.insert(ship).values({
 			userId: locals.user.id,
 			projectId: queriedProject.id,
-			url: sanitizeUrl(printablesUrl.toString()),
+			url: printablesUrlString,
 
 			editorFileType: editorUrlExists ? 'url' : 'upload',
-			editorUrl: editorUrlExists ? sanitizeUrl(editorUrl.toString()) : undefined,
+			editorUrl: editorUrlExists ? editorUrlString : undefined,
 			uploadedFileUrl: editorFileExists ? editorFilePath : undefined,
 
 			modelFile: modelPath
