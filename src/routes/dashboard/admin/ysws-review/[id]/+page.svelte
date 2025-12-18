@@ -85,24 +85,26 @@
 				</div>
 			</div>
 
-			<div class="mt-2 flex flex-row">
-				<h2 class="grow text-2xl font-bold">3D model</h2>
-				<a
-					href={`${data.s3PublicUrl}/${data.project.project.modelFile}`}
-					download
-					class="button primary flex flex-col justify-center rounded-lg px-3 hover:outline-3 focus:outline-3"
-				>
-					<Download />
-				</a>
-			</div>
+			{#if data.project.project.modelFile}
+				<div class="mt-2 flex flex-row">
+					<h2 class="grow text-2xl font-bold">3D model</h2>
+					<a
+						href={`${data.s3PublicUrl}/${data.project.project.modelFile}`}
+						download
+						class="button primary flex flex-col justify-center rounded-lg px-3 hover:outline-3 focus:outline-3"
+					>
+						<Download />
+					</a>
+				</div>
 
-			<div class="themed-box flex h-100 flex-col gap-3 overflow-clip">
-				<Spinny3DPreview
-					identifier="model"
-					modelUrl={`${data.s3PublicUrl}/${data.project.project.modelFile}`}
-					sizeCutoff={8 * 1024 * 1024}
-				/>
-			</div>
+				<div class="themed-box flex h-100 flex-col gap-3 overflow-clip">
+					<Spinny3DPreview
+						identifier="model"
+						modelUrl={`${data.s3PublicUrl}/${data.project.project.modelFile}`}
+						sizeCutoff={8 * 1024 * 1024}
+					/>
+				</div>
+			{/if}
 
 			<h2 class="mt-2 text-2xl font-bold">YSWS Review (don't use yet if you're not Arca)</h2>
 			<div class="themed-box flex flex-col gap-3 p-3">
