@@ -305,7 +305,7 @@ export const actions = {
 
 		const { first_name, last_name, primary_email, birthday, phone_number, addresses } = userData;
 
-		const address = addresses.find((address: { primary: boolean }) => address.primary);
+		const address = addresses?.find((address: { primary: boolean }) => address.primary);
 
 		return {
 			fetchPII: {

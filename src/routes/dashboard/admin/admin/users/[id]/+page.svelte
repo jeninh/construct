@@ -262,37 +262,39 @@
 
 					<h3 class="mt-3 mb-2 text-xl font-bold">address</h3>
 
-					<div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-						<DataCard title="Address ID">
-							<code>{form.fetchPII.address.id}</code>
-						</DataCard>
-						<DataCard title="Address first name">
-							{form.fetchPII.address.first_name}
-						</DataCard>
-						<DataCard title="Address last name">
-							{form.fetchPII.address.last_name}
-						</DataCard>
-						<DataCard title="Address line 1">
-							{form.fetchPII.address.line_1}
-						</DataCard>
-						{#if form.fetchPII.address.line_2}
-						<DataCard title="Address line 2">
-							{form.fetchPII.address.line_1}
-						</DataCard>
-						{/if}
-						<DataCard title="City">
-							{form.fetchPII.address.city}
-						</DataCard>
-						<DataCard title="State">
-							{form.fetchPII.address.state}
-						</DataCard>
-						<DataCard title="Postcode">
-							{form.fetchPII.address.postal_code}
-						</DataCard>
-						<DataCard title="Country">
-							{form.fetchPII.address.country}
-						</DataCard>
-					</div>
+					{#if form?.fetchPII.address}
+						<div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+							<DataCard title="Address ID">
+								<code>{form.fetchPII.address.id}</code>
+							</DataCard>
+							<DataCard title="Address first name">
+								{form.fetchPII.address.first_name}
+							</DataCard>
+							<DataCard title="Address last name">
+								{form.fetchPII.address.last_name}
+							</DataCard>
+							<DataCard title="Address line 1">
+								{form.fetchPII.address.line_1}
+							</DataCard>
+							{#if form.fetchPII.address.line_2}
+								<DataCard title="Address line 2">
+									{form.fetchPII.address.line_1}
+								</DataCard>
+							{/if}
+							<DataCard title="City">
+								{form.fetchPII.address.city}
+							</DataCard>
+							<DataCard title="State">
+								{form.fetchPII.address.state}
+							</DataCard>
+							<DataCard title="Postcode">
+								{form.fetchPII.address.postal_code}
+							</DataCard>
+							<DataCard title="Country">
+								{form.fetchPII.address.country}
+							</DataCard>
+						</div>
+					{/if}
 				{:else}
 					<form
 						action="?/fetchPII"
