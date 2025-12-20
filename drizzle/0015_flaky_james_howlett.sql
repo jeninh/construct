@@ -1,0 +1,1 @@
+ALTER TYPE "public"."legion_action" ADD VALUE 'add_comment' BEFORE 'reject';

@@ -2,18 +2,26 @@
 	import relativeDate from 'tiny-relative-date';
 	import Devlog from '$lib/components/Devlog.svelte';
 	import Head from '$lib/components/Head.svelte';
-	import { ExternalLink } from '@lucide/svelte';
 	import { enhance } from '$app/forms';
 	import { projectStatuses } from '$lib/utils.js';
+	import ProjectLinks from '$lib/components/ProjectLinks.svelte';
+	import Spinny3DPreview from '$lib/components/Spinny3DPreview.svelte';
+	import { Download } from '@lucide/svelte';
+	import ReviewHistory from '../../ReviewHistory.svelte';
 
-	let { data } = $props();
+	let { data, form } = $props();
 
-	let formPending = $state(false);
+	let actionsFormPending = $state(false);
+	let printFormPending = $state(false);
+	let markForPrintPending = $state(false);
+	let unmarkForPrintPending = $state(false);
 </script>
 
 <Head title={'Print: ' + data.project.project.name} />
 
-<div class="flex h-full flex-row gap-5">
+<div
+	class="-mt-5 -mr-5 flex h-full flex-row [&>*]:-mb-5 [&>*]:overflow-x-clip [&>*]:pt-5 [&>*]:pr-5"
+>
 	<div class="grow overflow-scroll">
 		<div class="flex grow flex-col gap-3">
 			<h1 class="mt-5 font-hero text-2xl font-medium">{data.project.project.name}</h1>
@@ -36,15 +44,13 @@
 							.project.timeSpent % 60}min
 					</p>
 					<p>Status: {projectStatuses[data.project.project.status]}</p>
-					<div class="mt-1 flex">
-						{#if data.project.project.url && data.project.project.url.length > 0}
-							<a class="button sm primary" href={data.project.project.url} target="_blank">
-								<ExternalLink />
-								Printables page
-							</a>
-						{:else}
-							<p class="font-bold">No Printables link</p>
-						{/if}
+					<div class="mt-1">
+						<ProjectLinks
+							url={data.project.project.url}
+							editorFileType={data.project.project.editorFileType}
+							editorUrl={data.project.project.editorUrl}
+							uploadedFileUrl={data.project.project.uploadedFileUrl}
+						/>
 					</div>
 				</div>
 
@@ -74,53 +80,182 @@
 
 				<div>
 					<h2 class="text-lg font-bold">Description</h2>
-					<p>{data.project.project.description}</p>
+					<p>
+						{#each data.project.project.description?.split('\n') as descriptionSection}
+							{descriptionSection}
+							<br />
+						{/each}
+					</p>
 				</div>
 			</div>
 
-			<h2 class="mt-2 text-2xl font-bold">Review</h2>
-			<div class="themed-box flex flex-col gap-3 p-3">
-				<form
-					method="POST"
-					class="flex flex-col gap-3"
-					use:enhance={() => {
-						formPending = true;
-						return async ({ update }) => {
-							await update();
-							formPending = false;
-						};
-					}}
-					onsubmit={() => {
-						return confirm('really submit?');
-					}}
-				>
-					<label class="flex flex-col gap-1">
-						<span class="font-medium">Action</span>
-						<select class="themed-input-on-box text-sm" name="action" required>
-							<option disabled selected>Select review action</option>
-							<option value="approve">Approve</option>
-							<option value="approve_no_print">Approve (no printing required)</option>
-							<option value="add_comment">Add comment</option>
-							<option value="reject">Reject</option>
-							<option value="reject_lock">Reject + lock project</option>
-						</select>
-					</label>
+			{#if data.project.project.modelFile}
+				<div class="mt-2 flex flex-row">
+					<h2 class="grow text-2xl font-bold">3D model</h2>
+					<a
+						href={`${data.s3PublicUrl}/${data.project.project.modelFile}`}
+						download
+						class="button primary flex flex-col justify-center rounded-lg px-3 hover:outline-3 focus:outline-3"
+					>
+						<Download />
+					</a>
+				</div>
 
-					<label class="flex flex-col gap-1">
-						<span class="font-medium">Notes <span class="opacity-50">(internal)</span></span>
-						<textarea name="notes" class="themed-input-on-box"></textarea>
-					</label>
+				<div class="themed-box flex h-100 flex-col gap-3 overflow-clip">
+					<Spinny3DPreview
+						identifier="model"
+						modelUrl={`${data.s3PublicUrl}/${data.project.project.modelFile}`}
+						sizeCutoff={8 * 1024 * 1024}
+					/>
+				</div>
+			{/if}
 
-					<label class="flex flex-col gap-1">
-						<span class="font-medium">Feedback <span class="opacity-50">(public)</span></span>
-						<textarea name="feedback" class="themed-input-on-box"></textarea>
-					</label>
+			<h2 class="mt-2 text-2xl font-bold">Printering area</h2>
 
-					<button type="submit" class="button md primary w-full" disabled={formPending}>
-						Submit!
-					</button>
-				</form>
-			</div>
+			{#if (data.project.project.status === 't1_approved' && !data.currentlyPrinting) || (data.project.project.status === 'printing' && data.project.project.printedBy === data.user.id)}
+				<div class="themed-box flex flex-col gap-3 p-3">
+					{#if data.project.project.status === 't1_approved' && !data.currentlyPrinting}
+						<form
+							method="POST"
+							action="?/markForPrint"
+							class="flex flex-col gap-3"
+							use:enhance={() => {
+								markForPrintPending = true;
+								return async ({ update }) => {
+									await update({ reset: false });
+									markForPrintPending = false;
+								};
+							}}
+						>
+							<button type="submit" class="button md primary w-full" disabled={markForPrintPending}>
+								I want to print this!
+							</button>
+						</form>
+					{/if}
+					{#if data.project.project.status === 'printing' && data.project.project.printedBy === data.user.id}
+						<form
+							method="POST"
+							action="?/unmarkForPrint"
+							class="flex flex-col gap-3"
+							use:enhance={() => {
+								unmarkForPrintPending = true;
+								return async ({ update }) => {
+									await update({ reset: false });
+									unmarkForPrintPending = false;
+								};
+							}}
+						>
+							<button
+								type="submit"
+								class="button md primary w-full"
+								disabled={unmarkForPrintPending}
+							>
+								nevermind i'm not printing ts
+							</button>
+						</form>
+					{/if}
+				</div>
+			{/if}
+
+			{#if data.project.project.status === 'printing' && data.project.project.printedBy === data.user.id}
+				<h3 class="text-xl font-bold">Print</h3>
+				<div class="themed-box flex flex-col gap-3 p-3">
+					<form
+						method="POST"
+						action="?/print"
+						class="flex flex-col gap-3"
+						use:enhance={() => {
+							printFormPending = true;
+							return async ({ update }) => {
+								await update({ reset: false });
+								printFormPending = false;
+							};
+						}}
+						onsubmit={() => {
+							return confirm('really submit?');
+						}}
+					>
+						<label class="flex flex-col gap-1">
+							<span class="font-medium">Filament used <span class="opacity-50">(grams)</span></span>
+							<input
+								name="filament"
+								type="number"
+								class="themed-input-on-box"
+								placeholder="50"
+								step="0.1"
+								min="0"
+								required
+							/>
+						</label>
+
+						<label class="flex flex-col gap-1">
+							<span class="font-medium">Notes <span class="opacity-50">(private)</span></span>
+							<textarea name="notes" class="themed-input-on-box"></textarea>
+						</label>
+
+						<label class="flex flex-col gap-1">
+							<span class="font-medium">Feedback <span class="opacity-50">(public)</span></span>
+							<textarea name="feedback" class="themed-input-on-box"></textarea>
+						</label>
+
+						<!-- {#if form?.printForm?.message}
+						<p>{form?.printForm?.message}</p>
+						{/if} -->
+
+						<button type="submit" class="button md primary w-full" disabled={printFormPending}>
+							Submit!
+						</button>
+					</form>
+				</div>
+			{/if}
+
+			{#if ['t1_approved', 'printing', 'printed'].includes(data.project.project.status)}
+				<h3 class="text-xl font-bold">Other stuff</h3>
+				<div class="themed-box flex flex-col gap-3 p-3">
+					<form
+						method="POST"
+						action="?/action"
+						class="flex flex-col gap-3"
+						use:enhance={() => {
+							actionsFormPending = true;
+							return async ({ update }) => {
+								await update({ reset: false });
+								actionsFormPending = false;
+							};
+						}}
+						onsubmit={() => {
+							return confirm('really submit?');
+						}}
+					>
+						<label class="flex flex-col gap-1">
+							<span class="font-medium">Action</span>
+							<select class="themed-input-on-box text-sm" name="action" required>
+								<option disabled selected>Select review action</option>
+								<option value="already_printed">Already printed</option>
+								<option value="add_comment">Add comment</option>
+								<option value="reject">Send back to reviewers</option>
+							</select>
+						</label>
+						<label class="flex flex-col gap-1">
+							<span class="font-medium">Notes <span class="opacity-50">(private)</span></span>
+							<textarea name="notes" class="themed-input-on-box"></textarea>
+						</label>
+
+						<label class="flex flex-col gap-1">
+							<span class="font-medium">Feedback <span class="opacity-50">(public)</span></span>
+							<textarea name="feedback" class="themed-input-on-box"></textarea>
+						</label>
+
+						<!-- {#if form?.actionsForm?.message}
+						<p>{form?.actionsForm?.message}</p>
+					{/if} -->
+
+						<button type="submit" class="button md primary w-full" disabled={actionsFormPending}>
+							Submit!
+						</button>
+					</form>
+				</div>
+			{/if}
 
 			<h2 class="mt-2 text-2xl font-bold">Journal logs</h2>
 			<div class="mb-5 flex flex-col gap-5">
@@ -130,21 +265,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="w-50 min-w-50 overflow-scroll lg:w-65 lg:min-w-65">
-		<div class="mb-5 flex flex-col gap-3">
-			<h1 class="text-2xl font-bold">Review history</h1>
-			{#each data.t1Reviews as review}
-				<div class="themed-box flex flex-col p-3 shadow-lg">
-					<p class="font-bold text-primary-400">{review.action}</p>
-					<p class="text-sm"><span class="font-bold">Notes:</span> {review.notes}</p>
-					<p class="text-sm"><span class="font-bold">Feedback:</span> {review.feedback}</p>
-					<p class="text-xs">
-						reviewed by <a href={`../../users/${review.user.id}`} class="underline"
-							>{review.user.name}</a
-						>
-					</p>
-				</div>
-			{/each}
-		</div>
+	<div class="w-60 min-w-60 overflow-scroll lg:w-70 lg:min-w-70">
+		<ReviewHistory reviews={data.reviews} />
 	</div>
 </div>

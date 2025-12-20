@@ -143,6 +143,33 @@ export const t1Review = pgTable('t1_review', {
 	timestamp: timestamp().notNull().defaultNow()
 });
 
+export const legionActionEnum = pgEnum('legion_action', [
+	'mark_for_printing',
+	'unmark_for_printing',
+	'print',
+	'add_comment',
+	'reject',
+	'already_printed'
+]);
+
+// Actions done by legion
+export const legionReview = pgTable('legion_review', {
+	id: serial().primaryKey(),
+	userId: integer()
+		.notNull()
+		.references(() => user.id),
+	projectId: integer()
+		.notNull()
+		.references(() => project.id),
+
+	feedback: text(),
+	notes: text(),
+	filamentUsed: real(),
+	action: legionActionEnum().notNull(),
+
+	timestamp: timestamp().notNull().defaultNow()
+});
+
 export const t2Review = pgTable('t2_review', {
 	id: serial().primaryKey(),
 	userId: integer()
@@ -181,4 +208,5 @@ export type User = typeof user.$inferSelect;
 export type Project = typeof project.$inferSelect;
 
 export type T1Review = typeof t1Review.$inferSelect;
-// export type T2Review = typeof t2Review.$inferSelect;
+export type LegionReview = typeof legionReview.$inferSelect;
+export type T2Review = typeof t2Review.$inferSelect;

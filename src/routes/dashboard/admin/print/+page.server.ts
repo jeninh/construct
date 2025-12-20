@@ -3,7 +3,7 @@ import { project, user, devlog } from '$lib/server/db/schema.js';
 import { error } from '@sveltejs/kit';
 import { eq, and, sql, ne, inArray } from 'drizzle-orm';
 import type { Actions } from './$types';
-import { getCurrentlyPrinting } from './utils';
+import { getCurrentlyPrinting } from './utils.server';
 
 export async function load({ locals }) {
 	if (!locals.user) {
@@ -31,7 +31,7 @@ export async function load({ locals }) {
 		.from(user)
 		.where(and(ne(user.trust, 'red'), ne(user.hackatimeTrust, 'red'))); // hide banned users
 
-	const currentlyPrinting = getCurrentlyPrinting(locals.user);
+	const currentlyPrinting = await getCurrentlyPrinting(locals.user);
 
 	return {
 		allProjects,

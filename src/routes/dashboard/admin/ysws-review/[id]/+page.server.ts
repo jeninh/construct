@@ -1,5 +1,5 @@
 import { db } from '$lib/server/db/index.js';
-import { project, user, devlog, t1Review, t2Review } from '$lib/server/db/schema.js';
+import { project, user, devlog, t2Review } from '$lib/server/db/schema.js';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { eq, and, asc, sql, desc } from 'drizzle-orm';
 import type { Actions } from './$types';
@@ -8,6 +8,7 @@ import { airtableBase } from '$lib/server/airtable';
 import { env } from '$env/dynamic/private';
 import { decrypt } from '$lib/server/encryption';
 import { getUserData } from '$lib/server/idvUserData';
+import { getReviewHistory } from '../../getReviewHistory.server';
 
 export async function load({ locals, params }) {
 	if (!locals.user) {
@@ -82,27 +83,10 @@ export async function load({ locals, params }) {
 		.where(and(eq(devlog.projectId, queriedProject.project.id), eq(devlog.deleted, false)))
 		.orderBy(asc(devlog.createdAt));
 
-	const t1Reviews = await db
-		.select({
-			user: {
-				id: user.id,
-				name: user.name
-			},
-			action: t1Review.action,
-			notes: t1Review.notes,
-			feedback: t1Review.feedback,
-			timestamp: t1Review.timestamp
-		})
-		.from(t1Review)
-		.innerJoin(user, eq(user.id, t1Review.userId))
-		.where(eq(t1Review.projectId, queriedProject.project.id))
-		// .groupBy(t1Review.userId, t1Review.notes, t1Review.feedback, t1Review.timestamp)
-		.orderBy(asc(t1Review.timestamp));
-
 	return {
 		project: queriedProject,
 		devlogs,
-		t1Reviews
+		reviews: await getReviewHistory(id)
 	};
 }
 

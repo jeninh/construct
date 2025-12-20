@@ -4,6 +4,7 @@ import { error, redirect } from '@sveltejs/kit';
 import { eq, and, asc, sql } from 'drizzle-orm';
 import type { Actions } from './$types';
 import { sendSlackDM } from '$lib/server/slack.js';
+import { getReviewHistory } from '../../getReviewHistory.server';
 
 export async function load({ locals, params }) {
 	if (!locals.user) {
@@ -75,27 +76,10 @@ export async function load({ locals, params }) {
 		.where(and(eq(devlog.projectId, queriedProject.project.id), eq(devlog.deleted, false)))
 		.orderBy(asc(devlog.createdAt));
 
-	const t1Reviews = await db
-		.select({
-			user: {
-				id: user.id,
-				name: user.name
-			},
-			action: t1Review.action,
-			notes: t1Review.notes,
-			feedback: t1Review.feedback,
-			timestamp: t1Review.timestamp
-		})
-		.from(t1Review)
-		.innerJoin(user, eq(user.id, t1Review.userId))
-		.where(eq(t1Review.projectId, queriedProject.project.id))
-		// .groupBy(t1Review.userId, t1Review.notes, t1Review.feedback, t1Review.timestamp)
-		.orderBy(asc(t1Review.timestamp));
-
 	return {
 		project: queriedProject,
 		devlogs,
-		t1Reviews
+		reviews: await getReviewHistory(id)
 	};
 }
 
