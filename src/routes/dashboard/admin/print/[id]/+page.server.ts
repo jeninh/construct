@@ -235,7 +235,7 @@ export const actions = {
 
 		if (
 			!filamentUsed ||
-			!parseFloat(filamentUsed.toString()) ||
+			isNaN(parseFloat(filamentUsed.toString())) ||
 			parseFloat(filamentUsed.toString()) < 0
 		) {
 			return error(400, { message: 'invalid filament used' });
