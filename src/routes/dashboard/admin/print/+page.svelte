@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import Head from '$lib/components/Head.svelte';
 	import { projectStatuses } from '$lib/utils.js';
-	import { ExternalLink } from '@lucide/svelte';
+	import { ExternalLink, Info } from '@lucide/svelte';
 	import relativeDate from 'tiny-relative-date';
 
 	let { data, form } = $props();
@@ -28,6 +28,18 @@
 
 <div class="flex h-full flex-col">
 	<h1 class="mt-5 mb-3 font-hero text-3xl font-medium">Print</h1>
+
+	{#if data.currentlyPrinting}
+		<div class="mb-3 flex flex-row gap-2 rounded-lg border-3 border-primary-700 bg-primary-900 p-3">
+			<Info />
+			<p>
+				You've already marked a project as printing:
+				<a href={`print/${data.currentlyPrinting.id}`} class="text-primary-400 underline"
+					>{data.currentlyPrinting.name}</a
+				>
+			</p>
+		</div>
+	{/if}
 
 	<div class="flex flex-col-reverse gap-5 lg:flex-row">
 		<div class="themed-box grow p-3">
