@@ -12,7 +12,7 @@ export async function load({ locals, params }) {
 		throw error(500);
 	}
 	if (!locals.user.isPrinter) {
-		throw error(403, { message: 'get out, peasant' });
+		throw error(403, { message: 'oi get out' });
 	}
 
 	const id: number = parseInt(params.id);
@@ -96,7 +96,7 @@ export const actions = {
 			throw error(500);
 		}
 		if (!locals.user.isPrinter) {
-			throw error(403, { message: 'get out, peasant' });
+			throw error(403, { message: 'oi get out' });
 		}
 
 		const currentlyPrinting = await getCurrentlyPrinting(locals.user);
@@ -148,7 +148,7 @@ export const actions = {
 			throw error(500);
 		}
 		if (!locals.user.isPrinter) {
-			throw error(403, { message: 'get out, peasant' });
+			throw error(403, { message: 'oi get out' });
 		}
 
 		const id: number = parseInt(params.id);
@@ -193,7 +193,7 @@ export const actions = {
 			throw error(500);
 		}
 		if (!locals.user.isPrinter) {
-			throw error(403, { message: 'get out, peasant' });
+			throw error(403, { message: 'oi get out' });
 		}
 
 		const currentlyPrinting = await getCurrentlyPrinting(locals.user);
@@ -273,7 +273,7 @@ export const actions = {
 			throw error(500);
 		}
 		if (!locals.user.isPrinter) {
-			throw error(403, { message: 'get out, peasant' });
+			throw error(403, { message: 'oi get out' });
 		}
 
 		const id: number = parseInt(params.id);

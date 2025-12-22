@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Head from '$lib/components/Head.svelte';
-	import { ChartLine, Users } from '@lucide/svelte';
+	import { ChartLine, Store, Users } from '@lucide/svelte';
 
 	let { data } = $props();
 </script>
@@ -28,6 +28,15 @@
 				<ChartLine size={40} />
 			</div>
 			<p class="text-2xl font-bold">Stats</p>
+		</a>
+		<a
+			class="themed-box flex flex-col items-center justify-center gap-2 p-3 shadow-xl transition-transform hover:scale-105"
+			href="admin/market"
+		>
+			<div>
+				<Store size={40} />
+			</div>
+			<p class="text-2xl font-bold">Market</p>
 		</a>
 	</div>
 </div>

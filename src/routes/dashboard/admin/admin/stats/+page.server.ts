@@ -8,7 +8,7 @@ export async function load({ locals }) {
 		throw error(500);
 	}
 	if (!locals.user.hasAdmin) {
-		throw error(403, { message: 'get out, peasant' });
+		throw error(403, { message: 'oi get out' });
 	}
 
 	const [users] = await db

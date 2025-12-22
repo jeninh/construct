@@ -231,7 +231,9 @@ export const marketItem = pgTable('market_item', {
 export const marketOrderStatus = pgEnum('market_order_status', [
 	'awaiting_approval',
 	'approved',
-	'fulfilled'
+	'fulfilled',
+	'denied',
+	'refunded'
 ]);
 
 export const marketItemOrder = pgTable('market_item_order', {

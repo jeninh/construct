@@ -13,7 +13,7 @@
 	let logoutEveryonePending = $state(false);
 </script>
 
-<Head title="Review" />
+<Head title="Users" />
 
 <div class="flex h-full flex-col">
 	<div class="mt-5 flex flex-row">
