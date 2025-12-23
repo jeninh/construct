@@ -4,13 +4,16 @@
 
 	let { data } = $props();
 
-	let sortedItems = $derived(
-		[...data.marketItems].sort((a, b) => {
-			if (a.isPublic !== b.isPublic) {
-				return a.isPublic ? -1 : 1;
-			}
-			return a.minPrice - b.minPrice;
-		})
+	let publicItems = $derived(
+		data.marketItems
+			.filter((item) => item.isPublic)
+			.sort((a, b) => a.minPrice - b.minPrice)
+	);
+
+	let draftItems = $derived(
+		data.marketItems
+			.filter((item) => !item.isPublic)
+			.sort((a, b) => a.minPrice - b.minPrice)
 	);
 
 	let showForm = $state(false);
@@ -238,25 +241,59 @@
 	</div>
 {/if}
 
-<div class="grid grid-cols-3 gap-4">
-	{#each sortedItems as item (item.id)}
-		<div class="themed-box p-4">
-			<img src={item.image} alt={item.name} class="w-full h-40 object-cover rounded-lg mb-3" />
-			<h3 class="text-lg font-hc font-bold mb-2">{item.name}</h3>
-			<p class="text-sm text-primary-300 mb-2">{item.description}</p>
-			<p class="text-sm text-primary-200 mb-1">Price: {item.minPrice} - {item.maxPrice}</p>
-			<p class="text-sm text-primary-200 mb-2">Score: {item.minShopScore} - {item.maxShopScore}</p>
-			{#if item.isPublic}
-				<p class="text-sm text-hc-green-400 font-semibold mb-3">Public</p>
-			{/if}
+<div class="flex flex-col gap-8">
+	<section>
+		<h2 class="text-xl font-hc font-bold mb-3">Public</h2>
+		{#if publicItems.length === 0}
+			<p class="text-sm text-primary-300">No public items yet.</p>
+		{:else}
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+				{#each publicItems as item (item.id)}
+					<div class="themed-box p-4">
+						<img src={item.image} alt={item.name} class="w-full h-40 object-cover rounded-lg mb-3" />
+						<h3 class="text-lg font-hc font-bold mb-2">{item.name}</h3>
+						<p class="text-sm text-primary-300 mb-2">{item.description}</p>
+						<p class="text-sm text-primary-200 mb-1">Price: {item.minPrice} - {item.maxPrice}</p>
+						<p class="text-sm text-primary-200 mb-2">Score: {item.minShopScore} - {item.maxShopScore}</p>
 
-			<div class="flex gap-2">
-				<button onclick={() => openEditForm(item)} class="button primary md flex-1">Edit</button>
-				<form method="POST" action="?/delete" class="flex-1">
-					<input type="hidden" name="id" value={item.id} />
-					<button type="submit" class="button red md w-full">Delete</button>
-				</form>
+						<div class="flex gap-2">
+							<button onclick={() => openEditForm(item)} class="button primary md flex-1">Edit</button>
+							<form method="POST" action="?/delete" class="flex-1">
+								<input type="hidden" name="id" value={item.id} />
+								<button type="submit" class="button red md w-full">Delete</button>
+							</form>
+						</div>
+					</div>
+				{/each}
 			</div>
-		</div>
-	{/each}
+		{/if}
+	</section>
+
+	<section>
+		<h2 class="text-xl font-hc font-bold mb-3">Drafts</h2>
+		{#if draftItems.length === 0}
+			<p class="text-sm text-primary-300">No drafts yet.</p>
+		{:else}
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+				{#each draftItems as item (item.id)}
+					<div class="themed-box p-4">
+						<img src={item.image} alt={item.name} class="w-full h-40 object-cover rounded-lg mb-3" />
+						<h3 class="text-lg font-hc font-bold mb-2">{item.name}</h3>
+						<p class="text-sm text-primary-300 mb-2">{item.description}</p>
+						<p class="text-sm text-primary-200 mb-1">Price: {item.minPrice} - {item.maxPrice}</p>
+						<p class="text-sm text-primary-200 mb-2">Score: {item.minShopScore} - {item.maxShopScore}</p>
+						<p class="text-xs font-semibold text-primary-400 mb-3">Draft (not public)</p>
+
+						<div class="flex gap-2">
+							<button onclick={() => openEditForm(item)} class="button primary md flex-1">Edit</button>
+							<form method="POST" action="?/delete" class="flex-1">
+								<input type="hidden" name="id" value={item.id} />
+								<button type="submit" class="button red md w-full">Delete</button>
+							</form>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</section>
 </div>
