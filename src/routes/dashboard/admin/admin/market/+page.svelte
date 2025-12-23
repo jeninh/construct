@@ -24,7 +24,7 @@
 		image: '',
 		minRequiredShopScore: '0',
 		minShopScore: '0',
-		maxShopScore: '0',
+		maxShopScore: '10000',
 		minPrice: '0',
 		maxPrice: '0',
 		isPublic: false
@@ -54,7 +54,7 @@
 			image: '',
 			minRequiredShopScore: '0',
 			minShopScore: '0',
-			maxShopScore: '0',
+			maxShopScore: '10000',
 			minPrice: '0',
 			maxPrice: '0',
 			isPublic: false
@@ -160,7 +160,7 @@
 								id="maxShopScoreInput"
 								type="number"
 								min={formData.minShopScore}
-								max="1000"
+								max="10000"
 								bind:value={formData.maxShopScore}
 								class="themed-input w-full px-3 py-2 text-center"
 							/>
@@ -170,7 +170,7 @@
 						<div class="w-full h-3 bg-primary-800/50 rounded-full relative shadow-inner overflow-hidden">
 							<div 
 								class="absolute h-3 bg-hc-orange-500 rounded-full transition-all duration-200"
-								style="left: {(parseInt(formData.minShopScore) / 1000) * 100}%; right: {100 - (parseInt(formData.maxShopScore) / 1000) * 100}%"
+								style="left: {(Math.max(0, Math.min(10000, parseInt(formData.minShopScore))) / 10000) * 100}%; right: {100 - (Math.max(0, Math.min(10000, parseInt(formData.maxShopScore))) / 10000) * 100}%"
 							></div>
 						</div>
 					</div>
@@ -250,7 +250,9 @@
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
 				{#each publicItems as item (item.id)}
 					<div class="themed-box p-4">
-						<img src={item.image} alt={item.name} class="w-full h-40 object-cover rounded-lg mb-3" />
+					<div class="aspect-square rounded-lg overflow-hidden mb-3 bg-primary-800/10">
+						<img src={item.image} alt={item.name} class="w-full h-full object-contain object-center" />
+					</div>
 						<h3 class="text-lg font-hc font-bold mb-2">{item.name}</h3>
 						<p class="text-sm text-primary-300 mb-2">{item.description}</p>
 						<p class="text-sm text-primary-200 mb-1">Price: {item.minPrice} - {item.maxPrice}</p>
@@ -277,7 +279,9 @@
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
 				{#each draftItems as item (item.id)}
 					<div class="themed-box p-4">
-						<img src={item.image} alt={item.name} class="w-full h-40 object-cover rounded-lg mb-3" />
+					<div class="aspect-square rounded-lg overflow-hidden mb-3 bg-primary-800/10">
+						<img src={item.image} alt={item.name} class="w-full h-full object-contain object-center" />
+					</div>
 						<h3 class="text-lg font-hc font-bold mb-2">{item.name}</h3>
 						<p class="text-sm text-primary-300 mb-2">{item.description}</p>
 						<p class="text-sm text-primary-200 mb-1">Price: {item.minPrice} - {item.maxPrice}</p>
