@@ -134,7 +134,7 @@
 	</div>
 
 	<label class="flex flex-row items-center gap-1">
-		<input type="checkbox" name="isPublic" class="checkbox" />
+		<input type="checkbox" name="isPublic" checked={formData.isPublic} class="checkbox" />
 		<span>Is public</span>
 	</label>
 
