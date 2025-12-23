@@ -21,7 +21,8 @@ export async function load({ locals }) {
 				eq(marketItem.deleted, false),
 				locals.user.hasAdmin ? undefined : eq(marketItem.isPublic, true)
 			)
-		);
+		)
+		.orderBy(marketItem.maxPrice);
 
 	return {
 		marketItems
