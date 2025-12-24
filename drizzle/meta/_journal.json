@@ -127,6 +127,20 @@
       "when": 1766436733390,
       "tag": "0017_long_greymalkin",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1766613036394,
+      "tag": "0018_sour_roughhouse",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1766613085822,
+      "tag": "0019_wide_gamora",
+      "breakpoints": true
     }
   ]
 }

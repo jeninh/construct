@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Head from '$lib/components/Head.svelte';
 	import { enhance } from '$app/forms';
-	import MarketItem from '../../MarketItem.svelte';
+	import MarketItem from '../../../MarketItem.svelte';
 
 	let { data } = $props();
 
@@ -145,6 +145,6 @@
 
 	<div class="flex gap-2">
 		<button type="submit" class="button primary md" disabled={formPending}>Save</button>
-		<a href=".." class="button dark-red md">Cancel</a>
+		<a href="../.." class="button dark-red md">Cancel</a>
 	</div>
 </form>

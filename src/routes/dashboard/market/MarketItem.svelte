@@ -1,21 +1,10 @@
 <script lang="ts">
-	let { item, userShopScore, userBricks } = $props();
+	let { item, userShopScore, userBricks, showBuy = true } = $props();
 
 	let disableBuy = $derived(
 		item.minRequiredShopScore > userShopScore || item.computedPrice > userBricks
 	);
 </script>
-
-<!-- <div
-	class={`themed-box relative flex flex-col p-3 shadow-lg/20 transition-all ${url ? 'hover:scale-102' : ''}`}
->
-	{#if url}
-		<a class="absolute inset-0 z-1" href={url} aria-label="Market item"></a>
-	{/if}
-	<div>
-		
-	</div>
-</div> -->
 
 <div class="themed-box flex flex-col gap-3 p-3">
 	<div class="aspect-square overflow-hidden rounded-lg bg-primary-800/10">
@@ -44,24 +33,21 @@
 				<div class="text-center text-lg font-bold">{item.computedPrice} bricks</div>
 			{/if}
 		</div>
-		<div>
-			<!-- {#if item.minRequiredShopScore > userShopScore}
-				<div class="mb-1 text-center text-sm">
-					{item.minRequiredShopScore - userShopScore} more market score needed
-				</div>
-			{/if} -->
-			<a
-				href={disableBuy ? null : `market/${item.id}`}
-				class={`button md primary ${disableBuy ? 'disabled' : ''}`}
-			>
-				{#if item.minRequiredShopScore > userShopScore}
-					{item.minRequiredShopScore - userShopScore} more market score needed
-				{:else if item.computedPrice > userBricks}
-					{item.computedPrice - userBricks} more bricks needed
-				{:else}
-					Buy for {item.computedPrice} bricks
-				{/if}
-			</a>
-		</div>
+		{#if showBuy}
+			<div>
+				<a
+					href={disableBuy ? null : `market/item/${item.id}`}
+					class={`button md primary ${disableBuy ? 'disabled' : ''}`}
+				>
+					{#if item.minRequiredShopScore > userShopScore}
+						{item.minRequiredShopScore - userShopScore} more market score needed
+					{:else if item.computedPrice > userBricks}
+						{item.computedPrice - userBricks} more bricks needed
+					{:else}
+						Buy for {item.computedPrice} bricks
+					{/if}
+				</a>
+			</div>
+		{/if}
 	</div>
 </div>

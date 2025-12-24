@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Head from '$lib/components/Head.svelte';
 	import { enhance } from '$app/forms';
-	import MarketItem from '../../MarketItem.svelte';
+	import MarketItem from '../../../MarketItem.svelte';
 
 	let { data } = $props();
 
@@ -29,7 +29,7 @@
 >
 	<p>Are you sure you want to delete this? If possible, make it private instead.</p>
 	<div class="flex gap-2">
-		<a href=".." class="button primary md">Cancel</a>
+		<a href="../.." class="button primary md">Cancel</a>
 		<button type="submit" class="button dark-red md" disabled={formPending}>Delete</button>
 	</div>
 </form>

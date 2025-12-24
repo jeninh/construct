@@ -213,16 +213,16 @@ export const marketItem = pgTable('market_item', {
 	name: text().notNull(),
 	description: text().notNull(),
 	image: text().notNull(),
-	
+
 	minRequiredShopScore: integer().notNull().default(0),
-	
+
 	minShopScore: integer().notNull(),
 	maxShopScore: integer().notNull(), // Score after which price becomes constant
 	maxPrice: integer().notNull(),
 	minPrice: integer().notNull(),
-	
+
 	isPublic: boolean().notNull().default(false),
-	
+
 	deleted: boolean().notNull().default(false),
 	createdAt: timestamp().notNull().defaultNow(),
 	updatedAt: timestamp().notNull().defaultNow()
@@ -238,14 +238,14 @@ export const marketOrderStatus = pgEnum('market_order_status', [
 
 export const marketItemOrder = pgTable('market_item_order', {
 	id: serial().primaryKey(),
-	userId: integer().references(() => user.id),
+	userId: integer().references(() => user.id).notNull(),
 
 	addressId: text().notNull(),
 	bricksPaid: integer().notNull(),
-	
+
 	status: marketOrderStatus().notNull().default('awaiting_approval'),
 	userNotes: text().notNull(),
-	notes: text().notNull(),
+	notes: text(),	// stuff like tracking code, shown to user
 
 	deleted: boolean().notNull().default(false),
 	createdAt: timestamp().notNull().defaultNow()

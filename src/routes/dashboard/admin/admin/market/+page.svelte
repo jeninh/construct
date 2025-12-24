@@ -32,7 +32,7 @@
 <h1 class="mt-5 mb-3 font-hero text-3xl font-medium">Market</h1>
 
 <div class="flex flex-row">
-	<a href="market/create" class="button primary md mb-5">Add item</a>
+	<a href="market/item/create" class="button primary md mb-5">Add item</a>
 </div>
 
 <div class="mb-5 flex flex-col gap-5">
