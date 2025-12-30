@@ -35,10 +35,10 @@ export function calculateCurrencyPayout(
 	dateCreated: Date
 ) {
 	return dateCreated.getTime() < BETA_DATE_CUTOFF.getTime()
-		? { clay: 0, bricks: minutesToBricks(minutes) * BETA_MULTIPLIER }
+		? { clay: null, bricks: minutesToBricks(minutes) * BETA_MULTIPLIER }
 		: hasBasePrinter
-			? { clay: 0, bricks: minutesToBricks(minutes) }
-			: { clay: minutesToClay(minutes), bricks: 0 };
+			? { clay: null, bricks: minutesToBricks(minutes) }
+			: { clay: minutesToClay(minutes), bricks: null };
 }
 
 export function calculatePayouts(
