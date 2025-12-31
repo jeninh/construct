@@ -216,27 +216,39 @@
 		</button>
 	</div>
 </form>
-<div class="mt-3 mb-5">
-	<h2 class="mb-2 text-xl font-bold">Estimate payout</h2>
-	<div class="themed-box p-3">
-		<label class="flex flex-col gap-1">
-			<span>Filament usage <span class="opacity-50">(grams, enter 0 if you're printing this yourself)</span></span>
-			<input
-				type="number"
-				min="0"
-				step="0.1"
-				placeholder="50"
-				bind:value={filamentUse}
-				class="themed-input-on-box"
-			/>
-		</label>
-		<p class="mt-2">
-			You'll get <span class="font-bold"
-				>{payoutEstimate.clay
-					? Math.round(payoutEstimate.clay * 10) / 10 + " clay"
-					: Math.round((payoutEstimate.bricks ?? 0) * 10) / 10 + " bricks"}</span
-			>
-		</p>
-		<p>This is just an estimate, not a guarantee - your journal time might be adjusted after review.</p>
+
+{#if data.project.timeSpent >= 120}
+	<div class="mt-3 mb-5">
+		<h2 class="mb-2 text-xl font-bold">Estimate payout</h2>
+		<div class="themed-box p-3">
+			<label class="flex flex-col gap-1">
+				<span
+					>Filament usage <span class="opacity-50"
+						>(grams, enter 0 if you're printing this yourself)</span
+					></span
+				>
+				<input
+					type="number"
+					min="0"
+					step="0.1"
+					placeholder="50"
+					bind:value={filamentUse}
+					class="themed-input-on-box"
+				/>
+			</label>
+			<p class="mt-2">
+				You'll get <span class="font-bold"
+					>{payoutEstimate.clay
+						? Math.round(payoutEstimate.clay * 10) / 10 + ' clay'
+						: Math.round((payoutEstimate.bricks ?? 0) * 10) / 10 + ' bricks'}</span
+				>
+			</p>
+			<p>
+				This is just an estimate, not a guarantee - your journal time might be adjusted after
+				review.
+			</p>
+		</div>
 	</div>
-</div>
+{:else}
+	<div class="h-5"></div>
+{/if}
