@@ -288,9 +288,22 @@ export const marketItemOrder = pgTable('market_item_order', {
 // 	updatedAt: timestamp().notNull().defaultNow()
 // });
 
+// Impersonate audit logs
+export const impersonateAuditLog = pgTable('impersonate_audit_log', {
+	id: serial().primaryKey(),
+	adminUserId: integer()
+		.notNull()
+		.references(() => user.id), // Admin who performed the impersonation
+	targetUserId: integer()
+		.notNull()
+		.references(() => user.id), // User who was impersonated
+	timestamp: timestamp().notNull().defaultNow()
+});
+
 export type Session = typeof session.$inferSelect;
 export type User = typeof user.$inferSelect;
 export type Project = typeof project.$inferSelect;
+export type ImpersonateAuditLog = typeof impersonateAuditLog.$inferSelect;
 
 export type T1Review = typeof t1Review.$inferSelect;
 export type LegionReview = typeof legionReview.$inferSelect;
